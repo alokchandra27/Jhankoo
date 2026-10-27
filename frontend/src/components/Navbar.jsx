@@ -197,7 +197,7 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn }) {
           {/* MOBILE INTERACTION ROW */}
           <div className="flex items-center gap-4 md:hidden">
             {/* Mobile Cart Counter Icon */}
-            <button
+            {/* <button
               onClick={() => navigate(cartStoreName ? `/publicstore/${encodeURIComponent(cartStoreName)}/cart` : "/cart")}
               className="relative rounded-full border border-creator-text/10 p-2 text-creator-text"
             >
@@ -208,7 +208,7 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn }) {
               {cartCount > 0 && (
                 <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-creator-accent text-[9px] font-bold text-white">{cartCount}</span>
               )}
-            </button>
+            </button> */}
 
             {/* Hamburger Trigger Engine */}
             <button
