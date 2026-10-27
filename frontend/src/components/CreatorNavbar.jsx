@@ -190,7 +190,7 @@ export default function CreatorNavbar({ isLoggedIn, setIsLoggedIn }) {
             }}
             className="w-full text-center rounded-xl border border-creator-text py-2.5 text-xs font-semibold text-creator-text cursor-pointer"
           >
-            Back to Jhankoo
+            Back to Jhankoo!
           </button>
         </div>
       )}
