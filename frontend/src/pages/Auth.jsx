@@ -23,7 +23,6 @@ const Auth = ({ setIsLoggedIn }) => {
 
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData);
-    console.log("Form Data:", data);
 
     if (!data.email || !data.password) {
       toast.info("Please fill in your email and password");

@@ -188,13 +188,13 @@ const Explore = () => {
               <div className="explore-collage-side absolute bottom-[8%] right-[2%] z-30 h-[37%] w-[36%] rotate-12 overflow-hidden border-[7px] border-[#faf7f0] bg-white shadow-[0_18px_40px_rgba(0,0,0,0.18)] sm:border-[10px]">
                 <img src={keychainsImg} alt="Handmade keychains" className="h-full w-full object-cover"/>
               </div>
-              <div className="absolute left-[3%] top-[8%] z-40 rotate-[-75deg]">
+              <div className="explore-collage-decor absolute left-[3%] top-[8%] z-40 rotate-[-75deg]">
                 <img src={leafStemImg} alt="" className="w-12 sm:w-16 lg:w-20"/>
               </div>
-              <div className="absolute bottom-[2%] right-[20%] z-40">
+              <div className="explore-collage-decor absolute bottom-[2%] right-[20%] z-40">
                 <img src={yarnImg} alt="" className="w-14 rotate-[-8deg] sm:w-20 lg:w-24 z-50"/>
               </div>
-              <div className="absolute bottom-[17%] left-[12%] z-40">
+              <div className="explore-collage-decor absolute bottom-[17%] left-[12%] z-40">
                 <img src={flowerDaisyImg} alt="" className="w-12 rotate-[-8deg] sm:w-16 lg:w-20"/>
               </div>
               <div className="absolute right-[4%] top-[3%] z-40 rotate-6 rounded-full bg-white px-4 py-2 font-caveat text-sm text-neutral-700 shadow-md sm:text-base">

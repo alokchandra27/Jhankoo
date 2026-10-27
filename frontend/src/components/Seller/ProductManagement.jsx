@@ -165,7 +165,7 @@ export default function ProductsManagement() {
 
         const response = await API.get("/api/products");
 
-        console.log("API Response:", response.data);
+        // console.log("API Response:", response.data);
 
         setMockProducts(response.data.products || []);
       } catch (error) {
@@ -241,10 +241,10 @@ export default function ProductsManagement() {
               <div className="mb-3 flex items-center gap-2">
                 <span className="h-px w-7 bg-creator-pink" />
 
-                <span className="font-caveat text-lg text-creator-pink">My little collection</span>
+                <span className="font-sans-serif text-lg text-creator-pink">My little collection</span>
               </div>
 
-              <h1 className="font-caveat text-3xl font-semibold tracking-tight text-neutral-800 sm:text-4xl">
+              <h1 className="font-sans-serif text-3xl font-semibold tracking-tight text-neutral-800 sm:text-4xl">
                 Products          </h1>
 
               <p className="mt-2 max-w-md text-sm leading-6 text-neutral-500 font-sans sm:text-basecd frontendcd">
@@ -481,7 +481,7 @@ function ProductCard({ product, index, onEdit, onDelete }) {
       </div>
 
       {/* Content */}
-      <div className="px-1 pt-3 font-caveat">
+      <div className="px-1 pt-3 font-sans-serif">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <h3 className="truncate font-sans text-base font-semibold capitalize text-neutral-800">{product.productName}</h3>
@@ -599,14 +599,14 @@ function AddProductForm({ formData, images, isSaving, handleInputChange, handleI
             <div className="mb-2 flex items-center gap-2">
               <span className="h-px w-6 bg-creator-pink" />
 
-              <span className="font-caveat text-base text-creator-pink">add something new</span>
+              <span className="font-sans-serif text-base text-creator-pink">add something new</span>
             </div>
 
             <h2 className="font-serif text-2xl font-semibold text-neutral-800">
               Create a product<span className="text-creator-pink">.</span>
             </h2>
 
-            <p className="mt-1 text-xs text-neutral-400 font-caveat">Give your creation a little space to shine.</p>
+            <p className="mt-1 text-xs text-neutral-400 font-sans-serif">Give your creation a little space to shine.</p>
           </div>
 
           <div className="hidden h-11 w-11 items-center justify-center rounded-full bg-creator-pink/10 text-creator-pink sm:flex">
@@ -616,7 +616,7 @@ function AddProductForm({ formData, images, isSaving, handleInputChange, handleI
       </div>
 
       {/* Fields */}
-      <div className="grid grid-cols-1 gap-5 p-5 sm:p-8 md:grid-cols-2 font-caveat">
+      <div className="grid grid-cols-1 gap-5 p-5 sm:p-8 md:grid-cols-2 font-sans-serif">
         {/* Name */}
         <Field label="Product Name" required className="md:col-span-2 text-creator-text">
           <input required type="text" name="productName" value={formData.productName} onChange={handleInputChange} placeholder="Beautiful Clay Turtle" className="creator-input border border-black/20 bg-white/50 p-3 text-sm placeholder:text-black/35 focus:outline-none focus:ring-2 focus:ring-creator-pink" />

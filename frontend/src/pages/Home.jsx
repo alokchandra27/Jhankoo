@@ -184,18 +184,20 @@ useGSAP(
             <LineSquiggle size={50} strokeWidth={1.5} className="text-creator-pink mt-1" />
           </div>
 
-          <div className="flex justify-center lg:justify-start md:justify-center xl:justify-start mt-6 xl:mt-2 md:mt-2 lg:mt-2 gap-5">
+          <div className="relative z-10 flex justify-center lg:justify-start md:justify-center xl:justify-start mt-6 xl:mt-2 md:mt-2 lg:mt-2 gap-5">
             <button
+              type="button"
               onClick={goToExplore}
-              className="animate-btn group flex items-center cursor-pointer bg-creator-pink px-6 py-3 text-sm font-medium text-white shadow-sm  hover:-translate-y-1 hover:bg-creator-accent hover:shadow-lg"
+              className="animate-btn group flex touch-manipulation items-center cursor-pointer bg-creator-pink px-6 py-3 text-sm font-medium text-white shadow-sm  hover:-translate-y-1 hover:bg-creator-accent hover:shadow-lg"
             >
               Explore Creators
               <ArrowRight size={17} className="transition-transform duration-300 group-hover:translate-x-1" />
             </button>
 
             <button
+              type="button"
               onClick={goToAuth}
-              className="animate-btn flex items-center cursor-pointer border border-creator-pink/50 bg-white/60 px-6 py-3 text-sm font-medium text-creator-text hover:-translate-y-1 hover:bg-white"
+              className="animate-btn flex touch-manipulation items-center cursor-pointer border border-creator-pink/50 bg-white/60 px-6 py-3 text-sm font-medium text-creator-text hover:-translate-y-1 hover:bg-white"
             >
               I'm a Creator
             </button>
