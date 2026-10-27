@@ -43,7 +43,10 @@ app.use("/api/products", productRoutes);
 app.use("/api/store", storeRoutes);
 app.use("/api/shop", publicStoreRoutes);
 
-app.use(express.static(path.join(__dirname, "../public")));
+// app.use(express.static(path.join(__dirname, "../public")));
+
+app.use(express.static(path.join(__dirname, "../public"), { index: false }));
+
 
 // Render Cloud aur Local dono par frontend/dist folder ka sahi absolute path nikalna
 const FRONTEND_DIST = path.resolve(__dirname, "../../frontend/dist");
