@@ -46,7 +46,7 @@ app.use("/api/shop", publicStoreRoutes);
 app.use(express.static(path.join(__dirname, "../public")));
 
 // Render Cloud aur Local dono par frontend/dist folder ka sahi absolute path nikalna
-const FRONTEND_DIST = path.resolve(process.cwd(), "../frontend/dist");
+const FRONTEND_DIST = path.resolve(__dirname, "../../frontend/dist");
 
 // 1. Static built files ko serve karna (CSS, JS, WebP Images)
 app.use("/assets", express.static(path.join(FRONTEND_DIST, "assets")));
