@@ -218,7 +218,7 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn }) {
               aria-controls="mobile-menu"
               aria-expanded={isOpen}
             >
-              <span className="sr-only">Open main menu</span>
+              <span className="sr-only">Open main menu !</span>
 
               {isOpen ? (
                 <svg className="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
