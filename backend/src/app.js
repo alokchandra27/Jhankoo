@@ -48,20 +48,19 @@ app.use(express.static(path.join(__dirname, "../public")));
 // Render Cloud aur Local dono par frontend/dist folder ka sahi absolute path nikalna
 const FRONTEND_DIST = path.resolve(__dirname, "../../frontend/dist");
 
-app.get("/", (req, res, next) => {
-  const fs = require("fs");
+app.get("/", (req, res) => {
   const htmlPath = path.join(FRONTEND_DIST, "index.html");
 
-  console.log("REQUESTED HTML:", htmlPath);
-  console.log(
-    "HTML ASSETS AT REQUEST:",
-    fs.readFileSync(htmlPath, "utf8")
-      .match(/assets\/index-[^"]+\.(?:js|css)/g)
-  );
-
-  next();
+  res.set("Cache-Control", "no-store");
+  res.sendFile(htmlPath, (err) => {
+    if (err) {
+      console.error("INDEX SERVING ERROR:", err);
+      if (!res.headersSent) {
+        res.status(err.statusCode || 500).send("Unable to serve frontend");
+      }
+    }
+  });
 });
-
 console.log("FRONTEND DIST PATH:", FRONTEND_DIST);
 console.log(
   "FRONTEND INDEX EXISTS:",
