@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import API from "./API/API";
@@ -11,49 +11,6 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn }) {
 
   const [isNavbarVisible, setIsNavbarVisible] = useState(true);
   const lastScrollY = useRef(0);
-
-  // Cart count
-  const [cartCount, setCartCount] = useState(0);
-  const [cartStoreName, setCartStoreName] = useState("");
-
-  useEffect(() => {
-    const syncCart = () => {
-      let activeCart = [];
-      let activeStoreName = "";
-
-      for (let index = 0; index < window.localStorage.length; index += 1) {
-        const key = window.localStorage.key(index);
-
-        if (!key?.startsWith("jhankoo_cart_")) {
-          continue;
-        }
-
-        try {
-          const savedCart = JSON.parse(window.localStorage.getItem(key) || "[]");
-
-          if (Array.isArray(savedCart) && savedCart.length > 0) {
-            activeCart = savedCart;
-            activeStoreName = savedCart[0]?.storeName || "";
-            break;
-          }
-        } catch (error) {
-          console.error("Error reading navbar cart:", error);
-        }
-      }
-
-      setCartCount(activeCart.reduce((total, item) => total + Number(item.quantity || 0), 0));
-      setCartStoreName(activeStoreName);
-    };
-
-    syncCart();
-    window.addEventListener("jhankoo-shopping-updated", syncCart);
-    window.addEventListener("storage", syncCart);
-
-    return () => {
-      window.removeEventListener("jhankoo-shopping-updated", syncCart);
-      window.removeEventListener("storage", syncCart);
-    };
-  }, []);
 
   // Scroll monitoring hook logic
   useEffect(() => {
@@ -130,7 +87,7 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn }) {
             {/* Seller Controls Context Injector Links */}
             {isLoggedIn && (
               <>
-                {/* Dashboard */}
+                {/* Products */}
                 <button
                   onClick={() => navigate("/products")}
                   className="flex items-center gap-1 text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100 hover:bg-emerald-100 transition shadow-sm active:scale-95 font-sans normal-case text-xs cursor-pointer"
@@ -141,7 +98,7 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn }) {
                 {/* Store Settings */}
                 <button
                   onClick={() => navigate("/store/settings")}
-                  className={`hover:text-creator-text transition-colors cursor-pointer ${isActive("/dashboard/settings") ? "text-creator-text" : ""}`}
+                  className={`hover:text-creator-text transition-colors cursor-pointer ${isActive("/store/settings") ? "text-creator-text" : ""}`}
                 >
                   Store Settings
                 </button>
@@ -156,32 +113,6 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn }) {
 
           {/* RIGHT: User Actions & Utilities */}
           <div className="hidden md:flex items-center space-x-5">
-            {/* Interactive Dynamic Cart Widget */}
-            {/* <button
-              onClick={() => navigate("/cart")}
-              className="relative rounded-full border border-creator-text/10 p-2 text-creator-text hover:bg-creator-bg transition-all active:scale-95"
-            >
-              <svg
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-                />
-              </svg>
-
-              {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-creator-accent text-[10px] font-bold text-white shadow-sm ring-2 ring-creator-bg-butter animate-bounce-short">
-                  {cartCount}
-                </span>
-              )}
-            </button> */}
-
             {/* Account CTA Conditional Switch */}
             {isLoggedIn ? (
               <button onClick={logoutHandler} className="rounded-full bg-red-500 px-5 py-2 text-xs font-caveat text-white shadow-sm hover:bg-opacity-95 transition-all cursor-pointer active:scale-95 cursor-pointer">
@@ -196,20 +127,6 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn }) {
 
           {/* MOBILE INTERACTION ROW */}
           <div className="flex items-center gap-4 md:hidden">
-            {/* Mobile Cart Counter Icon */}
-            {/* <button
-              onClick={() => navigate(cartStoreName ? `/publicstore/${encodeURIComponent(cartStoreName)}/cart` : "/cart")}
-              className="relative rounded-full border border-creator-text/10 p-2 text-creator-text"
-            >
-              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-              </svg>
-
-              {cartCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-creator-accent text-[9px] font-bold text-white">{cartCount}</span>
-              )}
-            </button> */}
-
             {/* Hamburger Trigger Engine */}
             <button
               onClick={() => setIsOpen(!isOpen)}
@@ -218,7 +135,7 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn }) {
               aria-controls="mobile-menu"
               aria-expanded={isOpen}
             >
-              <span className="sr-only">Open main menu !</span>
+              <span className="sr-only">Open main menu</span>
 
               {isOpen ? (
                 <svg className="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -265,16 +182,16 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn }) {
               <span
                 onClick={() => {
                   setIsOpen(false);
-                  navigate("/dashboard");
+                  navigate("/products");
                 }}
                 className="block rounded-xl px-3 py-2.5 text-base font-medium text-creator-text/80 hover:bg-creator-bg hover:text-creator-text transition-all"
               >
-                Dashboard
+                Products
               </span>
               <span
                 onClick={() => {
                   setIsOpen(false);
-                  navigate("/dashboard/settings");
+                  navigate("/store/settings");
                 }}
                 className="block rounded-xl px-3 py-2.5 text-base font-medium text-creator-text/80 hover:bg-creator-bg hover:text-creator-text transition-all"
               >
