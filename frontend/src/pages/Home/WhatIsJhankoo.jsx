@@ -9,7 +9,7 @@ import paletteImg from "../../assets/palette.webp";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const WhatIsCreatoly = () => {
+const WhatIsJhankoo = () => {
   const sectionRef = useRef(null);
   const imageRef = useRef(null);
 
@@ -102,7 +102,7 @@ const WhatIsCreatoly = () => {
           </h2>
 
           <p className="mt-5 max-w-xl text-sm leading-7 text-neutral-600 sm:text-base">
-            Creatorly gives independent brands, local shops, and home entrepreneurs a simple platform to showcase their products, tell their unique brand story, and accept direct orders from
+            Jhankoo gives independent brands, local shops, and home entrepreneurs a simple platform to showcase their products, tell their unique brand story, and accept direct orders from
             customers.
           </p>
 
@@ -124,7 +124,7 @@ const WhatIsCreatoly = () => {
 
               <h3 className="font-semibold text-neutral-800">Share anywhere</h3>
 
-              <p className="mt-2 text-xs leading-5 text-neutral-500">Share your Easily drop your Creatorly store link in your Instagram bio, WhatsApp chats, or any social media platform.</p>
+              <p className="mt-2 text-xs leading-5 text-neutral-500">Share your Easily drop your Jhankoo store link in your Instagram bio, WhatsApp chats, or any social media platform.</p>
             </div>
 
             <div className="what-feature group border-neutral-200 sm:border-l sm:pl-5">
@@ -143,4 +143,4 @@ const WhatIsCreatoly = () => {
   );
 };
 
-export default WhatIsCreatoly;
+export default WhatIsJhankoo;

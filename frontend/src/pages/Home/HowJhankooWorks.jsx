@@ -7,7 +7,7 @@ import leafStemImg from "../../assets/leafStem.webp";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const HowCreatorlyWorks = () => {
+const HowJhankooWorks = () => {
   const sectionRef = useRef(null);
   const cardsContainerRef = useRef(null);
   const bottomFlowRef = useRef(null);
@@ -76,7 +76,7 @@ const HowCreatorlyWorks = () => {
             <h2
               className="animate-work-header mt-1 font-playfair text-3xl font-bold text-neutral-800 sm:text-4xl md:text-5xl"
             >
-              How Creatorly Works
+              How Jhankoo Works
             </h2>
           </div>
 
@@ -138,7 +138,7 @@ const HowCreatorlyWorks = () => {
               </h3>
 
               <p className="mt-2 max-w-xs text-sm leading-6 text-neutral-500">
-                Paste your unique Creatorly link directly into your Instagram bio, WhatsApp Business profile, or share it anywhere else.
+                Paste your unique Jhankoo link directly into your Instagram bio, WhatsApp Business profile, or share it anywhere else.
               </p>
             </div>
 
@@ -179,7 +179,7 @@ const HowCreatorlyWorks = () => {
 
             <div className="flex items-center gap-2 text-green-600">
               <Store size={18} />
-              <span className="text-xs font-medium">Creatorly Store</span>
+              <span className="text-xs font-medium">Jhankoo Store</span>
             </div>
 
             <ArrowRight
@@ -197,4 +197,4 @@ const HowCreatorlyWorks = () => {
   )
 }
 
-export default HowCreatorlyWorks
+export default HowJhankooWorks

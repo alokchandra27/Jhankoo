@@ -20,7 +20,7 @@ const Footer = () => {
   };
 
   const sendFeedback = () => {
-    window.location.href = "mailto:alokchandra2621@gmail.com?subject=Feedback%20for%20Creatorly&body=Hi%20Alok,%0A%0AI%20wanted%20to%20share%20some%20feedback%20about%20Creatorly:%0A%0A";
+    window.location.href = "mailto:alokchandra2621@gmail.com?subject=Feedback%20for%20Jhankoo&body=Hi%20Alok,%0A%0AI%20wanted%20to%20share%20some%20feedback%20about%20Jhankoo:%0A%0A";
   };
 
   useGSAP(() => {
@@ -76,7 +76,7 @@ const Footer = () => {
           {/* BRAND / DEVELOPER */}
           <div className="max-w-md">
             <div className="animate-footer-left mb-3 flex items-center gap-2">
-              <span className="font-caveat text-3xl text-neutral-900">Creatorly</span>
+              <span className="font-caveat text-3xl text-neutral-900">Jhankoo</span>
               <Heart size={17} className="text-creator-pink" fill="currentColor" />
             </div>
 
@@ -126,7 +126,7 @@ const Footer = () => {
                   onClick={() => {
                     navigate("/");
                     setTimeout(() => {
-                      document.getElementById("creatorly-how-it-works")?.scrollIntoView({
+                      document.getElementById("jhankoo-how-it-works")?.scrollIntoView({
                         behavior: "smooth",
                       });
                     }, 100);
@@ -157,7 +157,7 @@ const Footer = () => {
 
             <div>
               <p className="text-sm font-medium text-neutral-800">Have an idea, found a bug, or just want to say hi?</p>
-              <p className="mt-0.5 text-xs text-neutral-500">I'd genuinely love to hear what you think about Creatorly.</p>
+              <p className="mt-0.5 text-xs text-neutral-500">I'd genuinely love to hear what you think about Jhankoo.</p>
             </div>
           </div>
 
@@ -173,7 +173,7 @@ const Footer = () => {
         {/* BOTTOM */}
         <div className="animate-footer-bottom mt-7 flex flex-col gap-2 border-t border-neutral-200/70 pt-5 text-[11px] text-neutral-400 sm:flex-row sm:items-center sm:justify-between">
           <p>
-            © {new Date().getFullYear()} Creatorly. Made with <Heart size={11} className="mx-0.5 inline text-creator-pink" fill="currentColor" /> for people who make things.
+            © {new Date().getFullYear()} Jhankoo. Made with <Heart size={11} className="mx-0.5 inline text-creator-pink" fill="currentColor" /> for people who make things.
           </p>
 
           <p className="font-caveat text-base text-neutral-500">Developed by Alok Chandra</p>

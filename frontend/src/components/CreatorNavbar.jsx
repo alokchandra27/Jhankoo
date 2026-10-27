@@ -25,11 +25,11 @@ export default function CreatorNavbar({ isLoggedIn, setIsLoggedIn }) {
     };
 
     syncCartCount();
-    window.addEventListener("Jhankoo-shopping-updated", syncCartCount);
+    window.addEventListener("jhankoo-shopping-updated", syncCartCount);
     window.addEventListener("storage", syncCartCount);
 
     return () => {
-      window.removeEventListener("Jhankoo-shopping-updated", syncCartCount);
+      window.removeEventListener("jhankoo-shopping-updated", syncCartCount);
       window.removeEventListener("storage", syncCartCount);
     };
   }, [storeName]);

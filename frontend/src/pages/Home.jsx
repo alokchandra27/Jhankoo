@@ -4,13 +4,13 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 
-import WhatIsCreatoly from "./Home/WhatIsCreatoly";
+import WhatIsCreatoly from "./Home/WhatIsJhankoo";
 import ExploreByCraft from "./Home/ExploreByCraft";
-import HowCreatorlyWorks from "./Home/HowCreatorlyWorks";
+import HowJhankooWorks from "./Home/HowJhankooWorks";
 import PeoplePassionPurpose from "./Home/PeoplePassionPurpose";
 import FinalCTA from "./Home/FinalCTA";
 import Footer from "./Footer";
-import CreatorlyValueSection from "./Home/CreatorlyValueSection";
+import JhankooValueSection from "./Home/JhankooValueSection";
 import leafStemImg from "../assets/leafStem.webp";
 import crochetImg from "../assets/crochet.webp";
 import paintsAndAllImg from "../assets/paintsandall.webp";
@@ -243,13 +243,13 @@ useGSAP(
 
       <ExploreByCraft />
 
-      {/* Creatorly Value Section */}
+      {/* Jhankoo Value Section */}
 
-      <CreatorlyValueSection />
+      <JhankooValueSection />
 
       {/* HOW CREATORLY WORKS */}
 
-      <HowCreatorlyWorks />
+      <HowJhankooWorks />
 
       {/* PEOPLE / PASSION / PURPOSE */}
 

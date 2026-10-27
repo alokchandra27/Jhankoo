@@ -26,7 +26,7 @@ const OurStory = lazy(() => import("../pages/OurStory"));
 // CREATORLY PAGE LOADER
 
 
-const CreatorlyPageLoader = () => {
+const JhankooPageLoader = () => {
   return (
     <div className="flex min-h-[100vh] items-center justify-center bg-creator-bg-butter px-6">
       <div className="text-center">
@@ -68,7 +68,7 @@ const LegacyPublicStoreRedirect = () => {
 
 const MainRoutes = ({ isLoggedIn, setIsLoggedIn }) => {
   return (
-    <Suspense fallback={<CreatorlyPageLoader />}>
+    <Suspense fallback={<JhankooPageLoader />}>
       <Routes>
    
         {/* 1. UNIVERSAL CUSTOMER / VISITOR PATHS */}

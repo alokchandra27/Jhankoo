@@ -531,7 +531,7 @@ const OurStory = () => {
               <h2 className="mt-3 font-playfair text-4xl font-bold leading-tight sm:text-5xl">
                 From a simple
                 <span className="block font-caveat font-normal text-pink-300">
-                  idea to Creatorly.
+                  idea to Jhankoo.
                 </span>
               </h2>
 
@@ -592,7 +592,7 @@ const OurStory = () => {
           <div className="mx-auto max-w-3xl text-center">
 
             <p className="font-caveat text-xl text-creator-pink sm:text-2xl">
-              So, what is Creatorly?
+              So, what is Jhankoo?
             </p>
 
             <h2 className="mt-3 font-playfair text-4xl font-bold leading-tight sm:text-5xl">
@@ -603,7 +603,7 @@ const OurStory = () => {
             </h2>
 
             <p className="mt-6 text-base leading-7 text-neutral-500 sm:text-lg">
-              Creatorly is built to give small businesses a simple home for
+              Jhankoo is built to give small businesses a simple home for
               the things they are already creating and selling.
             </p>
 
@@ -620,7 +620,7 @@ const OurStory = () => {
 
             <MeaningCard
               number="02"
-              title="Creatorly organizes the store."
+              title="Jhankoo organizes the store."
               text="Products, information and the brand experience can live together in one simple link."
             />
 
@@ -682,7 +682,7 @@ const OurStory = () => {
               </h2>
 
               <p className="mx-auto mt-6 max-w-2xl text-sm leading-7 text-neutral-600 sm:text-base">
-                Creatorly will keep evolving as I learn more about the people
+                Jhankoo will keep evolving as I learn more about the people
                 who use it. The goal is not to make small businesses fit into
                 complicated software — it is to make the software fit the way
                 they actually work.
@@ -720,7 +720,7 @@ const OurStory = () => {
         <div className="relative z-10 mx-auto max-w-3xl text-center">
 
           <p className="font-caveat text-xl text-pink-300 sm:text-2xl">
-            Maybe your business is exactly who Creatorly was made for.
+            Maybe your business is exactly who Jhankoo was made for.
           </p>
 
           <h2 className="mt-4 font-playfair text-4xl font-bold leading-tight sm:text-5xl">
@@ -752,7 +752,7 @@ const OurStory = () => {
               onClick={goToHome}
               className="flex w-full items-center justify-center border border-white/20 px-7 py-3.5 text-sm font-medium text-white transition-all duration-300 hover:-translate-y-1 hover:bg-white/10 sm:w-auto"
             >
-              Back to Creatorly
+              Back to Jhankoo
             </button>
 
           </div>

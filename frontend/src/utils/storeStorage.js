@@ -1,5 +1,5 @@
 // ============================================================
-// CREATORLY CUSTOMER STORAGE
+// JHANKOO CUSTOMER STORAGE
 // Cart + Wishlist are store specific
 // ============================================================
 
@@ -17,7 +17,7 @@ const getStoreKey = (storeName) => {
 // ============================================================
 
 export const getCartKey = (storeName) => {
-  return `creatorly_cart_${getStoreKey(storeName)}`;
+  return `jhankoo_cart_${getStoreKey(storeName)}`;
 };
 
 export const getCart = (storeName) => {
@@ -35,7 +35,7 @@ export const saveCart = (storeName, cart) => {
     getCartKey(storeName),
     JSON.stringify(cart)
   );
-  window.dispatchEvent(new Event("creatorly-shopping-updated"));
+  window.dispatchEvent(new Event("jhankoo-shopping-updated"));
 };
 
 export const addToCartStorage = (storeName, product) => {
@@ -144,7 +144,7 @@ export const removeFromCart = (
 
 export const clearCart = (storeName) => {
   localStorage.removeItem(getCartKey(storeName));
-  window.dispatchEvent(new Event("creatorly-shopping-updated"));
+  window.dispatchEvent(new Event("jhankoo-shopping-updated"));
 };
 
 // ============================================================

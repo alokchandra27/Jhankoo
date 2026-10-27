@@ -13,7 +13,47 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn }) {
   const lastScrollY = useRef(0);
 
   // Cart count
-  const [cartCount, setCartCount] = useState(2);
+  const [cartCount, setCartCount] = useState(0);
+  const [cartStoreName, setCartStoreName] = useState("");
+
+  useEffect(() => {
+    const syncCart = () => {
+      let activeCart = [];
+      let activeStoreName = "";
+
+      for (let index = 0; index < window.localStorage.length; index += 1) {
+        const key = window.localStorage.key(index);
+
+        if (!key?.startsWith("jhankoo_cart_")) {
+          continue;
+        }
+
+        try {
+          const savedCart = JSON.parse(window.localStorage.getItem(key) || "[]");
+
+          if (Array.isArray(savedCart) && savedCart.length > 0) {
+            activeCart = savedCart;
+            activeStoreName = savedCart[0]?.storeName || "";
+            break;
+          }
+        } catch (error) {
+          console.error("Error reading navbar cart:", error);
+        }
+      }
+
+      setCartCount(activeCart.reduce((total, item) => total + Number(item.quantity || 0), 0));
+      setCartStoreName(activeStoreName);
+    };
+
+    syncCart();
+    window.addEventListener("jhankoo-shopping-updated", syncCart);
+    window.addEventListener("storage", syncCart);
+
+    return () => {
+      window.removeEventListener("jhankoo-shopping-updated", syncCart);
+      window.removeEventListener("storage", syncCart);
+    };
+  }, []);
 
   // Scroll monitoring hook logic
   useEffect(() => {
@@ -157,7 +197,10 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn }) {
           {/* MOBILE INTERACTION ROW */}
           <div className="flex items-center gap-4 md:hidden">
             {/* Mobile Cart Counter Icon */}
-            <button onClick={() => navigate("/cart")} className="relative rounded-full border border-creator-text/10 p-2 text-creator-text">
+            <button
+              onClick={() => navigate(cartStoreName ? `/publicstore/${encodeURIComponent(cartStoreName)}/cart` : "/cart")}
+              className="relative rounded-full border border-creator-text/10 p-2 text-creator-text"
+            >
               <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
               </svg>

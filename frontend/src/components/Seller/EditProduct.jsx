@@ -169,9 +169,9 @@ const EditProduct = () => {
       data.append("productName", formData.productName);
       data.append("productDescription", formData.productDescription);
       data.append("productPrice", formData.productPrice);
-      data.append("shippingAvailable", formData.shippingAvailable);
-      data.append("shippingCost", formData.shippingCost);
-      data.append("shippingIncluded", formData.shippingIncluded);
+      data.append("shippingAvailable", false);
+      data.append("shippingCost", "");
+      data.append("shippingIncluded", false);
       data.append("category", formData.category);
       data.append("stocks", formData.stocks);
       data.append("color", formData.color);
@@ -297,7 +297,7 @@ const EditProduct = () => {
 
           <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
             <div>
-              <p className="mb-2 text-sm font-medium tracking-wide text-black/45">Creatorly · Product Studio</p>
+              <p className="mb-2 text-sm font-medium tracking-wide text-black/45">Jhankoo · Product Studio</p>
 
               <h1 className="font-caveat text-4xl tracking-tight text-black sm:text-5xl">
                 Edit your product<span className="text-black/25">.</span>
@@ -374,7 +374,7 @@ const EditProduct = () => {
                       <input type="number" name="stocks" value={formData.stocks} onChange={handleInputChange} min="0" placeholder="20" className="creator-input w-full border border-black/20 bg-white/50 p-3 text-sm placeholder:text-black/35 focus:outline-none focus:ring-2 focus:ring-creator-pink font-caveat" />
                     </div>
 
-                    <div className="sm:col-span-2 rounded-2xl border border-black/[0.06] bg-black/[0.02] p-4">
+                    {/* <div className="sm:col-span-2 rounded-2xl border border-black/[0.06] bg-black/[0.02] p-4">
                       <label className="flex cursor-pointer items-start gap-3">
                         <input type="checkbox" name="shippingAvailable" checked={formData.shippingAvailable} onChange={handleInputChange} className="mt-1 h-4 w-4 cursor-pointer accent-black" />
                         <div>
@@ -398,7 +398,7 @@ const EditProduct = () => {
                           </label>
                         </div>
                       )}
-                    </div>
+                    </div> */}
                   </div>
 
                   {/* CATEGORY */}

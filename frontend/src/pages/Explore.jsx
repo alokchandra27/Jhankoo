@@ -145,7 +145,7 @@ const Explore = () => {
           <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
             <div className="explore-hero-content max-w-3xl">
               <div className="explore-hero-text mb-6 inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white px-4 py-2 text-xs font-medium text-neutral-600 shadow-sm">
-                <Sparkles size={14} /> Explore Creatorly
+                <Sparkles size={14} /> Explore Jhankoo
               </div>
 
               <h1 className="explore-hero-text font-caveat text-6xl font-normal leading-[0.9] sm:text-7xl lg:text-8xl">
@@ -154,7 +154,7 @@ const Explore = () => {
               </h1>
 
               <p className="explore-hero-text mt-7 max-w-xl text-sm leading-7 text-neutral-600 sm:text-base">
-                Explore handmade pieces and independent creators, then jump straight to their own Creatorly store to see the full collection and connect with them.
+                Explore handmade pieces and independent creators, then jump straight to their own Jhankoo store to see the full collection and connect with them.
               </p>
 
               <div className="explore-hero-buttons mt-7 flex flex-wrap gap-3">
@@ -211,13 +211,13 @@ const Explore = () => {
           <p className="font-caveat text-xl text-creator-pink">for shoppers</p>
           <h2 className="mt-1 text-3xl font-semibold tracking-tight sm:text-4xl">Explore is the starting point.</h2>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-neutral-500">
-            Creatorly is not a marketplace. Explore helps you find a creator; their own store is where you see products and connect with them.
+            Jhankoo is not a marketplace. Explore helps you find a creator; their own store is where you see products and connect with them.
           </p>
 
           <div className="mt-8 grid gap-4 md:grid-cols-3">
             {[
               {n:"01", icon:Search, title:"Discover", text:"Find handmade products and independent creators that catch your eye."},
-              {n:"02", icon:Store, title:"Visit their store", text:"Open the creator's personal Creatorly store and browse their full collection."},
+              {n:"02", icon:Store, title:"Visit their store", text:"Open the creator's personal Jhankoo store and browse their full collection."},
               {n:"03", icon:MessageCircle, title:"Connect directly", text:"Ask questions or place an order through the creator's Instagram or WhatsApp."}
             ].map((step) => {
               const Icon = step.icon;
@@ -367,7 +367,7 @@ const Explore = () => {
               <p className="font-caveat text-2xl text-orange-200">for creators</p>
               <h2 className="mt-2 max-w-lg font-caveat text-5xl leading-[0.95] sm:text-6xl lg:text-7xl">Your Instagram can lead somewhere.</h2>
               <p className="mt-6 max-w-lg text-sm leading-7 text-neutral-300 sm:text-base">
-                Instead of sending people product photos one by one in DMs, give them one simple Creatorly link where they can see your work, products, prices and ways to contact you.
+                Instead of sending people product photos one by one in DMs, give them one simple Jhankoo link where they can see your work, products, prices and ways to contact you.
               </p>
               <button onClick={() => navigate("/auth")} className="group mt-7 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-medium text-neutral-900 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
                 Create your store <ArrowRight size={17} className="transition-transform group-hover:translate-x-1"/>
@@ -401,7 +401,7 @@ const Explore = () => {
           <Sparkles size={24} className="mx-auto text-neutral-500"/>
           <h2 className="mt-5 font-caveat text-5xl font-normal leading-none sm:text-6xl">Something handmade is waiting.</h2>
           <p className="mx-auto mt-5 max-w-xl text-sm leading-6 text-neutral-500 sm:text-base">
-            Explore the demo, visit a creator's store and see how Creatorly turns a simple shared link into a little home for their work.
+            Explore the demo, visit a creator's store and see how Jhankoo turns a simple shared link into a little home for their work.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <button onClick={() => document.getElementById("discover-section")?.scrollIntoView({behavior:"smooth"})}

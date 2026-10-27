@@ -104,7 +104,7 @@ const Auth = ({ setIsLoggedIn }) => {
           <div className=" w-full max-w-[440px] bg-white rounded-2xl px-5 py-0 sm:p-7 shadow-sm border border-neutral-100/80 flex flex-col relative">
             <div className="text-center mb-4">
               <div className="flex items-center justify-center gap-1 mb-0.5">
-                <span className="animate-label font-serif font-bold text-lg tracking-tight text-neutral-800">Creatorly</span>
+                <span className="animate-label font-serif font-bold text-lg tracking-tight text-neutral-800">Jhankoo</span>
               </div>
               <h3 className="font-serif text-xl sm:text-2xl font-semibold text-neutral-800 tracking-tight">{!isLogin ? "Create Your Store 😎" : "Welcome Back👋!"}</h3>
               <p className="text-[11px] text-neutral-400 mt-0.5 font-light">{!isLogin ? "Join a community of creators" : "Login to your creator dasboard"}</p>

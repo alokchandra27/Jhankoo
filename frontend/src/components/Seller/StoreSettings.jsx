@@ -563,7 +563,7 @@ export default function StoreSettings() {
           <h2 className="mt-1 font-caveat text-3xl font-black tracking-tight sm:text-4xl">Make your store feel like yours.</h2>
 
           <p className="mt-2 max-w-2xl text-sm leading-6 text-creator-text/55">
-            Update the information customers see on your Creatorly store and choose where they can contact you for orders and enquiries.
+            Update the information customers see on your Jhankoo store and choose where they can contact you for orders and enquiries.
           </p>
         </div>
 
@@ -1175,7 +1175,7 @@ export default function StoreSettings() {
 
           <div className="flex flex-col gap-5 px-5 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-7">
             <div>
-              <h4 className="text-sm font-bold text-red-900">Delete your Creatorly account</h4>
+              <h4 className="text-sm font-bold text-red-900">Delete your Jhankoo account</h4>
 
               <p className="mt-1 max-w-2xl text-xs leading-5 text-red-800/60">Your seller account and associated store access will be permanently deleted. This action cannot be undone.</p>
             </div>
@@ -1205,7 +1205,7 @@ export default function StoreSettings() {
 
               <h3 className="mt-5 font-serif text-2xl font-black">Delete your account?</h3>
 
-              <p className="mt-3 text-sm leading-6 text-creator-text/55">This will permanently remove your Creatorly seller account. Please make sure you really want to continue.</p>
+              <p className="mt-3 text-sm leading-6 text-creator-text/55">This will permanently remove your Jhankoo seller account. Please make sure you really want to continue.</p>
 
               <div className="mt-5 rounded-2xl border border-red-200 bg-red-50 p-4">
                 <div className="flex gap-3">

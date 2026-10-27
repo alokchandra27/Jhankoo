@@ -92,7 +92,7 @@ const LeftDiv = () => {
               Make
             </h1>
             <h2 className="animate-left-title mt-2 font-caveat text-5xl font-normal leading-[0.82] -rotate-2 text-neutral-800 xl:text-5xl">
-              it Creatorly.
+              it Jhankoo.
             </h2>
           </div>
 
@@ -104,7 +104,7 @@ const LeftDiv = () => {
         {/* Description & Squiggle */}
         <div className="animate-left-desc mt-6 max-w-md">
           <p className="text-sm leading-6 text-neutral-500 xl:text-sm">
-            Your work, your space, your people. Creatorly helps you put it
+            Your work, your space, your people. Jhankoo helps you put it
             all in one place.
           </p>
           <LineSquiggle

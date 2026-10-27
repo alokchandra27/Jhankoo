@@ -219,7 +219,7 @@ const Intro = ({ onIntroComplete }) => {
 
 
       tl.call(() => {
-        sessionStorage.setItem("creatorly-intro-seen", "true");
+        sessionStorage.setItem("jhankoo-intro-seen", "true");
         if (typeof onIntroComplete === "function") {
           onIntroComplete();
         }

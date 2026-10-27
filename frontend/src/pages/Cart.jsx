@@ -1,3 +1,4 @@
+
 import React, { useEffect, useMemo, useState } from "react";
 import whatsappImg from "../assets/whatsapp.webp";
 import instagramImg from "../assets/instagram.webp";
@@ -21,7 +22,12 @@ import {
 } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { getCart, removeFromCart, updateCartQuantity, clearCart } from "../utils/storeStorage";
+import {
+  getCart,
+  removeFromCart,
+  updateCartQuantity,
+  clearCart,
+} from "../utils/storeStorage";
 
 // ==========================================================
 // IMAGE HELPER
@@ -85,7 +91,9 @@ const Cart = () => {
       try {
         setLoadingStore(true);
 
-        const response = await fetch(`https://jhankoo.onrender.com/api/shop/${encodeURIComponent(storeName)}`);
+        const response = await fetch(
+          `https://jhankoo.onrender.com/api/shop/${encodeURIComponent(storeName)}`
+        );
 
         if (!response.ok) {
           throw new Error("Unable to fetch store");
@@ -112,27 +120,25 @@ const Cart = () => {
   // ==========================================================
 
   const totalItems = useMemo(() => {
-    return cart.reduce((total, item) => total + Number(item.quantity || 0), 0);
+    return cart.reduce(
+      (total, item) => total + Number(item.quantity || 0),
+      0
+    );
   }, [cart]);
 
   // ==========================================================
-  // SUBTOTAL
+  // PRODUCT SUBTOTAL
+  // Shipping is confirmed separately by the seller.
   // ==========================================================
 
   const subtotal = useMemo(() => {
     return cart.reduce((total, item) => {
-      return total + Number(item.productPrice || 0) * Number(item.quantity || 0);
+      return (
+        total +
+        Number(item.productPrice || 0) * Number(item.quantity || 0)
+      );
     }, 0);
   }, [cart]);
-
-  const shippingTotal = useMemo(() => {
-    return cart.reduce((total, item) => {
-      if (!item.shippingAvailable || item.shippingIncluded) return total;
-      return total + Number(item.shippingCost || 0) * Number(item.quantity || 0);
-    }, 0);
-  }, [cart]);
-
-  const orderTotal = subtotal + shippingTotal;
 
   // ==========================================================
   // CHANGE QUANTITY
@@ -175,13 +181,21 @@ const Cart = () => {
 
   const whatsappNumber = String(store?.whatsappNumber || "").trim();
 
-  const instagramUsername = String(store?.instagramUsername || "").replace("@", "").trim();
+  const instagramUsername = String(store?.instagramUsername || "")
+    .replace("@", "")
+    .trim();
 
-  const instagramLink = String(store?.instagramLink || "").trim() || (instagramUsername ? `https://instagram.com/${instagramUsername}` : "");
+  const instagramLink =
+    String(store?.instagramLink || "").trim() ||
+    (instagramUsername
+      ? `https://instagram.com/${instagramUsername}`
+      : "");
 
   const facebookLink = String(store?.facebookLink || "").trim();
 
-  const hasContactLinks = Boolean(whatsappNumber || instagramLink || facebookLink);
+  const hasContactLinks = Boolean(
+    whatsappNumber || instagramLink || facebookLink
+  );
 
   // ==========================================================
   // BUILD ITEM LIST
@@ -207,7 +221,7 @@ const Cart = () => {
   // ==========================================================
 
   const createQueryMessage = () => {
-    return `Hi! I found ${store?.storeName || storeName} on Creatorly. 👋
+    return `Hi! I found ${store?.storeName || storeName} on Jhankoo. 👋
 
 I'd like to ask about these products:
 
@@ -220,17 +234,24 @@ Thank you!`;
 
   // ==========================================================
   // ORDER MESSAGE
+  // Shipping and final payable amount are confirmed by seller.
   // ==========================================================
 
   const createOrderMessage = () => {
-    return `Hi! I found ${store?.storeName || storeName} on Creatorly and I'd like to place an order. ✨
+    return `Hi! I found ${store?.storeName || storeName} on Jhankoo and I'd like to place an order. ✨
 
 ORDER DETAILS
 --------------------
 ${buildProductsText()}
 
-ORDER TOTAL
-₹${orderTotal.toLocaleString("en-IN")}
+PRODUCT SUBTOTAL
+₹${subtotal.toLocaleString("en-IN")}
+
+SHIPPING CHARGES
+To be confirmed by the seller based on delivery location and combined parcel.
+
+FINAL PAYABLE AMOUNT
+To be confirmed by the seller before order confirmation.
 
 CUSTOMER DETAILS
 --------------------
@@ -239,7 +260,7 @@ Mobile: ${customer.mobile}
 ${customer.alternateMobile ? `Alternative Mobile: ${customer.alternateMobile}\n` : ""}Street / Locality: ${customer.street}
 Address: ${customer.address}
 
-Please confirm product availability, delivery charges and the final order details.
+Please confirm product availability, shipping charges and the final payable amount before confirming my order.
 
 Thank you!`;
   };
@@ -326,9 +347,14 @@ Thank you!`;
 
     const cleanNumber = String(whatsappNumber).replace(/\D/g, "");
 
-    const message = messageType === "order" ? createOrderMessage() : createQueryMessage();
+    const message =
+      messageType === "order"
+        ? createOrderMessage()
+        : createQueryMessage();
 
-    const whatsappUrl = `https://wa.me/${cleanNumber}?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/${cleanNumber}?text=${encodeURIComponent(
+      message
+    )}`;
 
     window.open(whatsappUrl, "_blank", "noopener,noreferrer");
 
@@ -346,7 +372,10 @@ Thank you!`;
       return;
     }
 
-    const message = messageType === "order" ? createOrderMessage() : createQueryMessage();
+    const message =
+      messageType === "order"
+        ? createOrderMessage()
+        : createQueryMessage();
 
     // Instagram doesn't provide a reliable universal
     // pre-filled arbitrary DM URL for this flow.
@@ -355,7 +384,9 @@ Thank you!`;
     navigator.clipboard
       ?.writeText(message)
       .then(() => {
-        alert("Message copied! Instagram will open next. Paste it in the creator's DM.");
+        alert(
+          "Message copied! Instagram will open next. Paste it in the creator's DM."
+        );
 
         window.open(instagramLink, "_blank", "noopener,noreferrer");
       })
@@ -374,12 +405,17 @@ Thank you!`;
       return;
     }
 
-    const message = messageType === "order" ? createOrderMessage() : createQueryMessage();
+    const message =
+      messageType === "order"
+        ? createOrderMessage()
+        : createQueryMessage();
 
     navigator.clipboard
       ?.writeText(message)
       .then(() => {
-        alert("Message copied! Facebook will open next. Paste it in Messenger.");
+        alert(
+          "Message copied! Facebook will open next. Paste it in Messenger."
+        );
 
         window.open(facebookLink, "_blank", "noopener,noreferrer");
       })
@@ -401,14 +437,23 @@ Thank you!`;
               <ShoppingBag size={30} strokeWidth={1.6} />
             </div>
 
-            <p className="mt-6 font-caveat text-xl text-creator-pink">nothing here yet ♡</p>
+            <p className="mt-6 font-caveat text-xl text-creator-pink">
+              nothing here yet ♡
+            </p>
 
-            <h1 className="mt-1 font-serif text-3xl font-semibold">Your cart is empty</h1>
+            <h1 className="mt-1 font-serif text-3xl font-semibold">
+              Your cart is empty
+            </h1>
 
-            <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-creator-text/50">Add something you love from this creator's collection and it'll appear here.</p>
+            <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-creator-text/50">
+              Add something you love from this creator&apos;s collection and
+              it&apos;ll appear here.
+            </p>
 
             <button
-              onClick={() => navigate(`/publicstore/${encodeURIComponent(storeName)}`)}
+              onClick={() =>
+                navigate(`/publicstore/${encodeURIComponent(storeName)}`)
+              }
               className="mt-7 inline-flex items-center gap-2 rounded-full bg-creator-text px-6 py-3 text-xs font-semibold text-white transition hover:-translate-y-1 hover:bg-creator-primary"
             >
               <ArrowLeft size={15} />
@@ -432,14 +477,21 @@ Thank you!`;
         ===================================================== */}
 
         <div className="mb-8">
-          <button onClick={() => navigate(`/publicstore/${encodeURIComponent(storeName)}`)} className="mb-6 flex items-center gap-2 text-xs text-creator-text/55 transition hover:text-creator-text">
+          <button
+            onClick={() =>
+              navigate(`/publicstore/${encodeURIComponent(storeName)}`)
+            }
+            className="mb-6 flex items-center gap-2 text-xs text-creator-text/55 transition hover:text-creator-text"
+          >
             <ArrowLeft size={15} />
             Continue shopping
           </button>
 
-          <div className="flex flex-col items-center justify-center gap-3  sm:flex-row sm:items-end lg:justify-between">
+          <div className="flex flex-col items-center justify-center gap-3 sm:flex-row sm:items-end lg:justify-between">
             <div>
-              <p className="font-caveat text-xl text-creator-pink">almost yours ♡</p>
+              <p className="font-caveat text-xl text-creator-pink">
+                almost yours ♡
+              </p>
 
               <h1 className="font-serif text-4xl font-semibold">Your Cart</h1>
             </div>
@@ -463,18 +515,25 @@ Thank you!`;
             <div className="space-y-3">
               {cart.map((item, index) => {
                 const price = Number(item.productPrice || 0);
-
                 const quantity = Number(item.quantity || 0);
-
                 const itemTotal = price * quantity;
 
                 return (
-                  <article key={item._id} className="rounded-[15px] border border-creator-text/10 bg-white p-3 shadow-sm transition hover:shadow-md sm:p-4">
+                  <article
+                    key={item._id}
+                    className="rounded-[15px] border border-creator-text/10 bg-white p-3 shadow-sm transition hover:shadow-md sm:p-4"
+                  >
                     <div className="flex gap-4">
                       {/* IMAGE */}
 
                       <div className="h-28 w-24 shrink-0 overflow-hidden rounded-[18px] bg-creator-bg sm:h-32 sm:w-28">
-                        <img src={getImageUrl(item.productImage1)} alt={item.productName} loading={index < 2 ? "eager" : "lazy"} decoding="async" className="h-full w-full object-cover" />
+                        <img
+                          src={getImageUrl(item.productImage1)}
+                          alt={item.productName}
+                          loading={index < 2 ? "eager" : "lazy"}
+                          decoding="async"
+                          className="h-full w-full object-cover"
+                        />
                       </div>
 
                       {/* DETAILS */}
@@ -482,11 +541,19 @@ Thank you!`;
                       <div className="min-w-0 flex-1">
                         <div className="flex justify-between gap-3">
                           <div className="min-w-0">
-                            <span className="inline-flex rounded-full bg-creator-accent/40 px-2 py-1 text-[8px] uppercase tracking-wider text-creator-text/60">{item.category || "Handmade"}</span>
+                            <span className="inline-flex rounded-full bg-creator-accent/40 px-2 py-1 text-[8px] uppercase tracking-wider text-creator-text/60">
+                              {item.category || "Handmade"}
+                            </span>
 
-                            <h2 className="mt-2 truncate font-serif text-base font-semibold sm:text-lg">{item.productName}</h2>
+                            <h2 className="mt-2 truncate font-serif text-base font-semibold sm:text-lg">
+                              {item.productName}
+                            </h2>
 
-                            {item.size && <p className="mt-1 text-[10px] text-creator-text/40">Size: {item.size}</p>}
+                            {item.size && (
+                              <p className="mt-1 text-[10px] text-creator-text/40">
+                                Size: {item.size}
+                              </p>
+                            )}
                           </div>
 
                           <button
@@ -499,10 +566,13 @@ Thank you!`;
 
                         <div className="mt-5 flex items-end justify-between gap-3">
                           <div>
-                            <p className="font-serif text-lg font-semibold">₹{price.toLocaleString("en-IN")}</p>
+                            <p className="font-serif text-lg font-semibold">
+                              ₹{price.toLocaleString("en-IN")}
+                            </p>
 
                             <p className="mt-1 text-[10px] text-creator-text/40">
-                              ₹{itemTotal.toLocaleString("en-IN")} for {quantity}
+                              ₹{itemTotal.toLocaleString("en-IN")} for{" "}
+                              {quantity}
                             </p>
                           </div>
 
@@ -510,22 +580,35 @@ Thank you!`;
 
                           <div className="flex items-center gap-1 rounded-full border border-creator-text/10 bg-creator-bg p-1">
                             <button
-                              onClick={() => changeQuantity(item._id, quantity - 1)}
+                              onClick={() =>
+                                changeQuantity(item._id, quantity - 1)
+                              }
                               disabled={quantity <= 1}
                               className="flex h-7 w-7 items-center justify-center rounded-full transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-30"
                             >
                               <Minus size={12} />
                             </button>
 
-                            <span className="w-6 text-center text-xs font-semibold">{quantity}</span>
+                            <span className="w-6 text-center text-xs font-semibold">
+                              {quantity}
+                            </span>
 
-                            <button onClick={() => changeQuantity(item._id, quantity + 1)} className="flex h-7 w-7 items-center justify-center rounded-full transition hover:bg-white">
+                            <button
+                              onClick={() =>
+                                changeQuantity(item._id, quantity + 1)
+                              }
+                              className="flex h-7 w-7 items-center justify-center rounded-full transition hover:bg-white"
+                            >
                               <Plus size={12} />
                             </button>
                           </div>
                         </div>
 
-                        {item.customization && <p className="mt-2 text-[9px] text-creator-pink">Customization available</p>}
+                        {item.customization && (
+                          <p className="mt-2 text-[9px] text-creator-pink">
+                            Customization available
+                          </p>
+                        )}
                       </div>
                     </div>
                   </article>
@@ -544,23 +627,35 @@ Thank you!`;
                 </div>
 
                 <div className="flex-1">
-                  <h3 className="font-serif text-lg font-semibold">Have a question first?</h3>
+                  <h3 className="font-serif text-lg font-semibold">
+                    Have a question first?
+                  </h3>
 
-                  <p className="mt-1 text-xs leading-5 text-creator-text/50">Ask the creator about availability, customization, delivery or anything else.</p>
+                  <p className="mt-1 text-xs leading-5 text-creator-text/50">
+                    Ask the creator about availability, customization,
+                    delivery or anything else.
+                  </p>
 
                   <button
                     // onClick={() => setShowQuery(!showQuery)}
-                    className="mt-4 inline-flex items-center gap-2 rounded-full border border-creator-text/10 bg-creator-bg px-4 py-2.5 text-xs font-semibold transition hover:-translate-y-0.5 hover:bg-white hover:shadow-sm cursor-not-allowed"
+                    className="mt-4 inline-flex cursor-not-allowed items-center gap-2 rounded-full border border-creator-text/10 bg-creator-bg px-4 py-2.5 text-xs font-semibold transition hover:-translate-y-0.5 hover:bg-white hover:shadow-sm"
                   >
                     Coming soon
-                    {showQuery ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                    {showQuery ? (
+                      <ChevronUp size={14} />
+                    ) : (
+                      <ChevronDown size={14} />
+                    )}
                   </button>
                 </div>
               </div>
 
               {showQuery && (
                 <div className="mt-5 border-t border-creator-text/10 pt-5">
-                  <MessagePreviewBox message={createQueryMessage()} compact />
+                  <MessagePreviewBox
+                    message={createQueryMessage()}
+                    compact
+                  />
 
                   <div className="mt-4 grid gap-2 sm:grid-cols-3">
                     <ContactButton
@@ -604,28 +699,61 @@ Thank you!`;
 
           <aside className="h-fit lg:sticky lg:top-24">
             <div className="rounded-[2px] border border-creator-text/10 bg-white p-6 shadow-sm">
-              <p className="font-caveat text-lg text-creator-pink">your order ♡</p>
+              <p className="font-caveat text-lg text-creator-pink">
+                your order ♡
+              </p>
 
-              <h2 className="mt-1 font-serif text-2xl font-semibold">Order Summary</h2>
+              <h2 className="mt-1 font-serif text-2xl font-semibold">
+                Order Summary
+              </h2>
 
-              <div className="my-6 space-y-3 border-y border-creator-text/10 py-5">
+              {/* PRODUCT SUBTOTAL + SHIPPING NOTE */}
+
+              <div className="my-6 space-y-4 border-y border-creator-text/10 py-5">
                 <div className="flex justify-between text-xs text-creator-text/55">
                   <span>Items ({totalItems})</span>
 
                   <span>₹{subtotal.toLocaleString("en-IN")}</span>
                 </div>
 
-                <div className="flex justify-between text-xs text-creator-text/55">
-                  <span>Shipping</span>
-                  <span>{shippingTotal ? `₹${shippingTotal.toLocaleString("en-IN")}` : "Included / free"}</span>
+                <div className="rounded-xl bg-creator-bg p-3">
+                  <div className="flex items-center gap-2">
+                    <MessageCircle
+                      size={15}
+                      className="shrink-0 text-creator-primary"
+                    />
+
+                    <span className="text-xs font-semibold">
+                      Shipping Made Simple!
+                    </span>
+                  </div>
+
+                  <p className="mt-1.5 text-[11px] leading-5 text-creator-text/60">
+                  Shipping may be included! Any extra charges will be confirmed before you place your order by the seller based on your delivery location and combined parcel.
+                  
+                  </p>
                 </div>
               </div>
 
-              <div className="flex items-end justify-between">
-                <span className="text-sm text-creator-text/55">Total</span>
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="text-sm text-creator-text/55">
+                    Product subtotal
+                  </p>
 
-                <strong className="font-serif text-3xl">₹{orderTotal.toLocaleString("en-IN")}</strong>
+                  <p className="mt-1 text-[10px] text-creator-text/40">
+                    Shipping charges confirmed before ordering
+                  </p>
+                </div>
+
+                <strong className="font-serif text-3xl">
+                  ₹{subtotal.toLocaleString("en-IN")}
+                </strong>
               </div>
+
+              <p className="mt-3 text-right text-[10px] leading-4 text-creator-pink">
+                Final payable amount will be confirmed by the seller.
+              </p>
 
               {/* ORDER BUTTON */}
 
@@ -634,16 +762,23 @@ Thank you!`;
                 className="group mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-creator-text py-4 text-xs font-semibold text-white transition-all duration-300 hover:-translate-y-1 hover:bg-creator-primary hover:shadow-lg"
               >
                 Place Order
-                <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
+                <ArrowRight
+                  size={15}
+                  className="transition-transform group-hover:translate-x-1"
+                />
               </button>
 
-              <p className="mt-3 text-center text-[9px] leading-4 text-creator-text/40">You'll review your order before sending it to the creator.</p>
+              <p className="mt-3 text-center text-[9px] leading-4 text-creator-text/40">
+                You&apos;ll review your order before sending it to the creator.
+              </p>
             </div>
 
             {/* STORE CONTACTS */}
 
             <div className="mt-4 rounded-[24px] border border-creator-text/10 bg-white p-5">
-              <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-creator-text/40">Connect with {store?.storeName || "creator"}</p>
+              <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-creator-text/40">
+                Connect with {store?.storeName || "creator"}
+              </p>
 
               {hasContactLinks ? (
                 <div className="mt-4 grid grid-cols-3 gap-2">
@@ -653,9 +788,16 @@ Thank you!`;
                         setMessageType("query");
                         setShowPreview(true);
                       }}
-                      className="flex flex-col items-center gap-1.5 rounded-2xl bg-[#EAF9EF] px-2 py-3 text-[10px] font-semibold text-neutral-700 transition hover:-translate-y-1 cursor-pointer"
+                      className="flex cursor-pointer flex-col items-center gap-1.5 rounded-2xl bg-[#EAF9EF] px-2 py-3 text-[10px] font-semibold text-neutral-700 transition hover:-translate-y-1"
                     >
-                      <img src={whatsappImg} alt="WhatsApp" loading="lazy" fetchPriority="low" decoding="async" className="h-10 w-10" />
+                      <img
+                        src={whatsappImg}
+                        alt="WhatsApp"
+                        loading="lazy"
+                        fetchPriority="low"
+                        decoding="async"
+                        className="h-10 w-10"
+                      />
                       WhatsApp
                     </button>
                   )}
@@ -666,9 +808,16 @@ Thank you!`;
                         setMessageType("query");
                         setShowPreview(true);
                       }}
-                      className="flex flex-col items-center gap-1.5 rounded-2xl bg-[#FCECF5] px-2 py-3 text-[10px] font-semibold text-neutral-700 transition hover:-translate-y-1 cursor-pointer"
+                      className="flex cursor-pointer flex-col items-center gap-1.5 rounded-2xl bg-[#FCECF5] px-2 py-3 text-[10px] font-semibold text-neutral-700 transition hover:-translate-y-1"
                     >
-                      <img src={instagramImg} alt="Instagram" loading="lazy" fetchPriority="low" decoding="async" className="h-10 w-10" />
+                      <img
+                        src={instagramImg}
+                        alt="Instagram"
+                        loading="lazy"
+                        fetchPriority="low"
+                        decoding="async"
+                        className="h-10 w-10"
+                      />
                       Instagram
                     </button>
                   )}
@@ -679,15 +828,24 @@ Thank you!`;
                         setMessageType("query");
                         setShowPreview(true);
                       }}
-                      className="flex flex-col items-center gap-1.5 rounded-2xl bg-[#EEF4FF] px-2 py-3 text-[10px] font-semibold text-neutral-700 transition hover:-translate-y-1 cursor-pointer"
+                      className="flex cursor-pointer flex-col items-center gap-1.5 rounded-2xl bg-[#EEF4FF] px-2 py-3 text-[10px] font-semibold text-neutral-700 transition hover:-translate-y-1"
                     >
-                      <img src={facebookImg} alt="Facebook" loading="lazy" fetchPriority="low" decoding="async" className="h-10 w-10" />
+                      <img
+                        src={facebookImg}
+                        alt="Facebook"
+                        loading="lazy"
+                        fetchPriority="low"
+                        decoding="async"
+                        className="h-10 w-10"
+                      />
                       Facebook
                     </button>
                   )}
                 </div>
               ) : (
-                <p className="mt-3 text-xs leading-5 text-creator-text/50">This creator has not added any contact links yet.</p>
+                <p className="mt-3 text-xs leading-5 text-creator-text/50">
+                  This creator has not added any contact links yet.
+                </p>
               )}
             </div>
           </aside>
@@ -698,14 +856,24 @@ Thank you!`;
         ===================================================== */}
 
         {showOrderForm && (
-          <section id="order-form" className="mt-8 rounded-[30px] border border-creator-text/10 bg-white p-6 shadow-sm sm:p-8">
+          <section
+            id="order-form"
+            className="mt-8 rounded-[30px] border border-creator-text/10 bg-white p-6 shadow-sm sm:p-8"
+          >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="font-caveat text-lg text-creator-pink">almost there ♡</p>
+                <p className="font-caveat text-lg text-creator-pink">
+                  almost there ♡
+                </p>
 
-                <h2 className="mt-1 font-serif text-2xl font-semibold">Your delivery details</h2>
+                <h2 className="mt-1 font-serif text-2xl font-semibold">
+                  Your delivery details
+                </h2>
 
-                <p className="mt-2 max-w-xl text-xs leading-5 text-creator-text/45">These details will be included in the message sent to the creator.</p>
+                <p className="mt-2 max-w-xl text-xs leading-5 text-creator-text/45">
+                  These details will be included in the message sent to the
+                  creator.
+                </p>
               </div>
 
               <button
@@ -717,16 +885,44 @@ Thank you!`;
             </div>
 
             <div className="mt-7 grid gap-4 md:grid-cols-2">
-              <InputField label="Full name" name="name" value={customer.name} onChange={handleInputChange} placeholder="Your full name" />
+              <InputField
+                label="Full name"
+                name="name"
+                value={customer.name}
+                onChange={handleInputChange}
+                placeholder="Your full name"
+              />
 
-              <InputField label="Mobile number" name="mobile" value={customer.mobile} onChange={handleInputChange} placeholder="Your mobile number" inputMode="numeric" />
+              <InputField
+                label="Mobile number"
+                name="mobile"
+                value={customer.mobile}
+                onChange={handleInputChange}
+                placeholder="Your mobile number"
+                inputMode="numeric"
+              />
 
-              <InputField label="Alternative mobile" name="alternateMobile" value={customer.alternateMobile} onChange={handleInputChange} placeholder="Optional" inputMode="numeric" />
+              <InputField
+                label="Alternative mobile"
+                name="alternateMobile"
+                value={customer.alternateMobile}
+                onChange={handleInputChange}
+                placeholder="Optional"
+                inputMode="numeric"
+              />
 
-              <InputField label="Street / locality" name="street" value={customer.street} onChange={handleInputChange} placeholder="Street, locality" />
+              <InputField
+                label="Street / locality"
+                name="street"
+                value={customer.street}
+                onChange={handleInputChange}
+                placeholder="Street, locality"
+              />
 
               <div className="md:col-span-2">
-                <label className="mb-2 block text-[10px] font-semibold uppercase tracking-wider text-creator-text/45">Complete address</label>
+                <label className="mb-2 block text-[10px] font-semibold uppercase tracking-wider text-creator-text/45">
+                  Complete address
+                </label>
 
                 <textarea
                   name="address"
@@ -745,7 +941,10 @@ Thank you!`;
                   <Check size={15} />
                 </div>
 
-                <p className="text-[10px] leading-5 text-creator-text/55">Your information will be sent directly to the creator through WhatsApp. Creatorly does not process payment.</p>
+                <p className="text-[10px] leading-5 text-creator-text/55">
+                  Your information will be sent directly to the creator through
+                  WhatsApp. Jhankoo does not process payment.
+                </p>
               </div>
 
               <button
@@ -771,12 +970,19 @@ Thank you!`;
 
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="font-caveat text-lg text-creator-pink">before you send ♡</p>
+                <p className="font-caveat text-lg text-creator-pink">
+                  before you send ♡
+                </p>
 
-                <h2 className="font-serif text-2xl font-semibold">Review your message</h2>
+                <h2 className="font-serif text-2xl font-semibold">
+                  Review your message
+                </h2>
               </div>
 
-              <button onClick={() => setShowPreview(false)} className="flex h-9 w-9 items-center justify-center rounded-full bg-creator-bg text-creator-text/50 transition hover:bg-neutral-100">
+              <button
+                onClick={() => setShowPreview(false)}
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-creator-bg text-creator-text/50 transition hover:bg-neutral-100"
+              >
                 <X size={16} />
               </button>
             </div>
@@ -784,23 +990,42 @@ Thank you!`;
             {/* Preview */}
 
             <div className="mt-6">
-              <MessagePreviewBox message={messageType === "order" ? createOrderMessage() : createQueryMessage()} />
+              <MessagePreviewBox
+                message={
+                  messageType === "order"
+                    ? createOrderMessage()
+                    : createQueryMessage()
+                }
+              />
             </div>
 
-            {/* Order total */}
+            {/* PRODUCT SUBTOTAL + SHIPPING CONFIRMATION */}
 
             {messageType === "order" && (
-              <div className="mt-4 flex items-center justify-between rounded-2xl bg-creator-bg px-4 py-4">
-                <span className="text-xs text-creator-text/50">Order total</span>
+              <div className="mt-4 rounded-2xl bg-creator-bg px-4 py-4">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-xs text-creator-text/50">
+                    Product subtotal
+                  </span>
 
-                <strong className="font-serif text-xl">₹{orderTotal.toLocaleString("en-IN")}</strong>
+                  <strong className="font-serif text-xl">
+                    ₹{subtotal.toLocaleString("en-IN")}
+                  </strong>
+                </div>
+
+                <p className="mt-2 text-[10px] leading-5 text-creator-text/55">
+                  Shipping and final payable amount will be confirmed by the
+                  seller on WhatsApp before the order is confirmed.
+                </p>
               </div>
             )}
 
             {/* Send options */}
 
             <div className="mt-6">
-              <p className="mb-3 text-[9px] font-semibold uppercase tracking-[0.18em] text-creator-text/40">Send via</p>
+              <p className="mb-3 text-[9px] font-semibold uppercase tracking-[0.18em] text-creator-text/40">
+                Send via
+              </p>
 
               <div className="grid gap-2">
                 {whatsappNumber && (
@@ -817,7 +1042,9 @@ Thank you!`;
                       <div>
                         <p className="text-sm font-semibold">WhatsApp</p>
 
-                        <p className="text-[10px] text-white/75">Message opens ready to send</p>
+                        <p className="text-[10px] text-white/75">
+                          Message opens ready to send
+                        </p>
                       </div>
                     </div>
 
@@ -834,17 +1061,21 @@ Thank you!`;
                     className="flex items-center justify-between rounded-2xl border border-neutral-200 bg-white px-5 py-4 text-left transition hover:-translate-y-0.5 hover:shadow-md"
                   >
                     <div className="flex items-center gap-3">
-                      {/* <Instagram
-                        size={20}
-                        className="text-creator-pink"
-                      /> */}
-
-                      <img src={instagramImg} alt="Instagram" loading="lazy" fetchPriority="low" decoding="async" className="h-5 w-5"></img>
+                      <img
+                        src={instagramImg}
+                        alt="Instagram"
+                        loading="lazy"
+                        fetchPriority="low"
+                        decoding="async"
+                        className="h-5 w-5"
+                      />
 
                       <div>
                         <p className="text-sm font-semibold">Instagram</p>
 
-                        <p className="text-[10px] text-neutral-400">Copy message & open profile</p>
+                        <p className="text-[10px] text-neutral-400">
+                          Copy message &amp; open profile
+                        </p>
                       </div>
                     </div>
 
@@ -861,12 +1092,21 @@ Thank you!`;
                     className="flex items-center justify-between rounded-2xl border border-neutral-200 bg-white px-5 py-4 text-left transition hover:-translate-y-0.5 hover:shadow-md"
                   >
                     <div className="flex items-center gap-3">
-                     <img src={facebookImg} alt="Facebook" loading="lazy" fetchPriority="low" decoding="async" className="h-5 w-5"></img>
+                      <img
+                        src={facebookImg}
+                        alt="Facebook"
+                        loading="lazy"
+                        fetchPriority="low"
+                        decoding="async"
+                        className="h-5 w-5"
+                      />
 
                       <div>
                         <p className="text-sm font-semibold">Facebook</p>
 
-                        <p className="text-[10px] text-neutral-400">Copy message & open page</p>
+                        <p className="text-[10px] text-neutral-400">
+                          Copy message &amp; open page
+                        </p>
                       </div>
                     </div>
 
@@ -874,12 +1114,18 @@ Thank you!`;
                   </button>
                 )}
 
-                {!hasContactLinks && <p className="rounded-2xl bg-creator-bg px-4 py-3 text-center text-xs text-creator-text/50">This creator has not added any contact links yet.</p>}
+                {!hasContactLinks && (
+                  <p className="rounded-2xl bg-creator-bg px-4 py-3 text-center text-xs text-creator-text/50">
+                    This creator has not added any contact links yet.
+                  </p>
+                )}
               </div>
             </div>
 
             <p className="mt-5 text-center text-[9px] leading-4 text-neutral-400">
-              Creatorly doesn't process your payment. The creator will confirm availability, delivery and final details with you.
+              Jhankoo doesn&apos;t process your payment. The creator will
+              confirm availability, delivery charges and the final payable
+              amount with you.
             </p>
           </div>
         </div>
@@ -892,10 +1138,19 @@ Thank you!`;
 // INPUT FIELD
 // ==========================================================
 
-const InputField = ({ label, name, value, onChange, placeholder, inputMode }) => {
+const InputField = ({
+  label,
+  name,
+  value,
+  onChange,
+  placeholder,
+  inputMode,
+}) => {
   return (
     <div>
-      <label className="mb-2 block text-[10px] font-semibold uppercase tracking-wider text-creator-text/45">{label}</label>
+      <label className="mb-2 block text-[10px] font-semibold uppercase tracking-wider text-creator-text/45">
+        {label}
+      </label>
 
       <input
         name={name}
@@ -919,10 +1174,20 @@ const MessagePreviewBox = ({ message, compact = false }) => {
       <div className="flex items-center gap-2 border-b border-creator-text/10 bg-white px-4 py-3">
         <MessageCircle size={14} />
 
-        <span className="text-[9px] font-semibold uppercase tracking-[0.15em] text-creator-text/50">Message preview</span>
+        <span className="text-[9px] font-semibold uppercase tracking-[0.15em] text-creator-text/50">
+          Message preview
+        </span>
       </div>
 
-      <div className={`whitespace-pre-wrap px-4 py-4 text-xs leading-6 text-creator-text/70 ${compact ? "max-h-52 overflow-y-auto" : "max-h-72 overflow-y-auto"}`}>{message}</div>
+      <div
+        className={`whitespace-pre-wrap px-4 py-4 text-xs leading-6 text-creator-text/70 ${
+          compact
+            ? "max-h-52 overflow-y-auto"
+            : "max-h-72 overflow-y-auto"
+        }`}
+      >
+        {message}
+      </div>
     </div>
   );
 };
@@ -938,7 +1203,7 @@ const ContactButton = ({ icon: Icon, label, available, onClick }) => {
       onClick={onClick}
       className="flex items-center justify-center gap-2 rounded-full border border-creator-text/10 bg-white px-3 py-3 text-[10px] font-semibold transition hover:-translate-y-0.5 hover:shadow-sm disabled:cursor-not-allowed disabled:opacity-30"
     >
-      <Icon size={14} />
+      {Icon && <Icon size={14} />}
       {label}
     </button>
   );

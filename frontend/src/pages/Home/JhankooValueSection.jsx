@@ -11,12 +11,12 @@ import bg3Img from "../../assets/bg3.webp";
 gsap.registerPlugin(ScrollTrigger);
 
 
-const CreatorlyValueSection = () => {
+const JhankooValueSection = () => {
   const navigate = useNavigate();
 
-  const CreatorlyValueSectionRef = useRef(null);
+  const JhankooValueSectionRef = useRef(null);
   const OneLinkWholeStoreRef = useRef(null);
-  const WhyCreatorlyRef = useRef(null);
+  const WhyJhankooRef = useRef(null);
   const CTARef = useRef(null);
 
   const features = [
@@ -51,7 +51,7 @@ const CreatorlyValueSection = () => {
     // 1. UPPER HERO TEXT ANIMATION (Pure Section ke aate hi)
     gsap.from(".animate-text-top", {
       scrollTrigger: {
-        trigger: CreatorlyValueSectionRef.current,
+        trigger: JhankooValueSectionRef.current,
         start: "top 80%",
         toggleActions: "play none none none",
       },
@@ -107,7 +107,7 @@ const CreatorlyValueSection = () => {
     // 5. BOTTOM WHY CREATORLY TEXT ANIMATION
     gsap.from(".animate-text-bottom", {
       scrollTrigger: {
-        trigger: WhyCreatorlyRef.current,
+        trigger: WhyJhankooRef.current,
         start: "top 80%",
         toggleActions: "play none none none",
       },
@@ -118,10 +118,10 @@ const CreatorlyValueSection = () => {
       ease: "power3.out",
     });
 
-  }, { scope: CreatorlyValueSectionRef });
+  }, { scope: JhankooValueSectionRef });
 
   return (
-    <section ref={CreatorlyValueSectionRef} className="relative overflow-hidden bg-[#f8f3e8] px-5 py-20 sm:px-8 lg:px-16 lg:py-28">
+    <section ref={JhankooValueSectionRef} className="relative overflow-hidden bg-[#f8f3e8] px-5 py-20 sm:px-8 lg:px-16 lg:py-28">
       {/* Decorative background */}
       <div className="pointer-events-none absolute -right-24 top-20 h-72 w-72 rounded-full bg-orange-200/30 blur-3xl" />
       <div className="pointer-events-none absolute -left-24 bottom-10 h-72 w-72 rounded-full bg-yellow-200/30 blur-3xl" />
@@ -143,7 +143,7 @@ const CreatorlyValueSection = () => {
           </h2>
 
           <p className="animate-text-top mx-auto mt-6 max-w-2xl text-base leading-7 text-neutral-600 sm:text-lg">
-            Create your free Creatorly store. Share one simple link on
+            Create your free Jhankoo store. Share one simple link on
             Instagram, WhatsApp or anywhere.
           </p>
 
@@ -164,7 +164,7 @@ const CreatorlyValueSection = () => {
             <button
               onClick={() => {
                 document
-                  .getElementById("creatorly-how-it-works")
+                  .getElementById("jhankoo-how-it-works")
                   ?.scrollIntoView({ behavior: "smooth" });
               }}
               className="animate-button inline-flex w-full items-center justify-center border border-neutral-300 bg-white/70 px-7 py-3.5 text-sm font-medium text-neutral-800 hover:-translate-y-1 hover:bg-white hover:shadow-md active:scale-95 sm:w-auto"
@@ -236,8 +236,8 @@ const CreatorlyValueSection = () => {
 
 
         <div
-        ref={WhyCreatorlyRef}
-          id="creatorly-how-it-works"
+        ref={WhyJhankooRef}
+          id="jhankoo-how-it-works"
           className=" mt-24 overflow-hidden rounded-[2rem] bg-neutral-900 px-7 py-12 text-white sm:px-12 lg:mt-32 lg:px-16 lg:py-16"
         >
 
@@ -245,7 +245,7 @@ const CreatorlyValueSection = () => {
 
             <div>
               <p className=" animate-text-bottom text-sm font-medium uppercase tracking-[0.22em] text-neutral-400">
-                Why Creatorly
+                Why Jhankoo
               </p>
 
               <h3 className="animate-text-bottom mt-4 text-3xl font-semibold leading-tight sm:text-4xl">
@@ -253,7 +253,7 @@ const CreatorlyValueSection = () => {
               </h3>
 
               <p className="animate-text-bottom mt-5 max-w-lg text-sm leading-7 text-neutral-400 sm:text-base">
-               You don't need to hire a developer, learn how to code, or struggle with complicated e-commerce platforms. Creatorly handles the tech so you can focus entirely on running your business and serving your customers.
+               You don't need to hire a developer, learn how to code, or struggle with complicated e-commerce platforms. Jhankoo handles the tech so you can focus entirely on running your business and serving your customers.
               </p>
             </div>
 
@@ -288,4 +288,4 @@ const CreatorlyValueSection = () => {
   );
 };
 
-export default CreatorlyValueSection;
+export default JhankooValueSection;

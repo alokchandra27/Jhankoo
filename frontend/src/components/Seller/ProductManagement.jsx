@@ -622,31 +622,12 @@ function AddProductForm({ formData, images, isSaving, handleInputChange, handleI
           <input required type="text" name="productName" value={formData.productName} onChange={handleInputChange} placeholder="Beautiful Clay Turtle" className="creator-input border border-black/20 bg-white/50 p-3 text-sm placeholder:text-black/35 focus:outline-none focus:ring-2 focus:ring-creator-pink" />
         </Field>
 
-        {/* SHIPPING */}
+        {/* SHIPPING — temporarily disabled */}
+        {/*
         <div className="md:col-span-2 rounded-2xl border border-black/[0.06] bg-black/[0.02] p-4">
-          <label className="flex cursor-pointer items-start gap-3">
-            <input type="checkbox" name="shippingAvailable" checked={formData.shippingAvailable} onChange={handleInputChange} className="mt-1 h-4 w-4 cursor-pointer accent-creator-pink" />
-            <div>
-              <p className="text-sm font-medium text-creator-text">Shipping available</p>
-              <p className="mt-1 text-xs text-black/45">Offer delivery for this product.</p>
-            </div>
-          </label>
-
-          {formData.shippingAvailable && (
-            <div className="mt-4 grid gap-4 sm:grid-cols-2">
-              <Field label="Shipping cost per item">
-                <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-neutral-400">₹</span>
-                  <input required type="number" min="0" name="shippingCost" value={formData.shippingCost} onChange={handleInputChange} placeholder="0" className="creator-input w-full pl-8 border border-black/20 bg-white/50 p-3 text-sm placeholder:text-black/35 focus:outline-none focus:ring-2 focus:ring-creator-pink" />
-                </div>
-              </Field>
-              <label className="flex cursor-pointer items-center gap-3 sm:pt-7">
-                <input type="checkbox" name="shippingIncluded" checked={formData.shippingIncluded} onChange={handleInputChange} className="h-4 w-4 cursor-pointer accent-creator-pink" />
-                <span className="text-sm text-creator-text">Shipping included in product price</span>
-              </label>
-            </div>
-          )}
+          ...
         </div>
+        */}
 
         {/* Description */}
         <Field label="Description" required className="md:col-span-2">

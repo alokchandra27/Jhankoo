@@ -87,7 +87,7 @@ const DiscoverCreators = () => {
             </h1>
 
             <p className="mt-6 max-w-2xl text-base leading-7 text-neutral-600 sm:text-lg">
-              Explore handmade artists, crafters and small creators. Visit their Creatorly stores and discover the work they create with their own hands.
+              Explore handmade artists, crafters and small creators. Visit their Jhankoo stores and discover the work they create with their own hands.
             </p>
           </div>
 
@@ -239,7 +239,7 @@ const DiscoverCreators = () => {
 
           <h2 className="mx-auto mt-4 max-w-2xl text-3xl font-semibold tracking-tight sm:text-4xl">Give your work a place of its own.</h2>
 
-          <p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-neutral-600 sm:text-base">Create your Creatorly store and share one simple link with your audience.</p>
+          <p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-neutral-600 sm:text-base">Create your Jhankoo store and share one simple link with your audience.</p>
 
           <button
             onClick={() => navigate("/auth")}

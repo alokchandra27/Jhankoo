@@ -18,13 +18,13 @@ const App = () => {
 
   // 1. Session Storage is best: Tab close hone par forget karega, refresh par yaad rakhega.
   const [hasSeenIntro, setHasSeenIntro] = useState(
-    () => sessionStorage.getItem("creatorly-intro-seen") === "true"
+    () => sessionStorage.getItem("jhankoo-intro-seen") === "true"
   );
 
   // 2. Main Logic: First visit par current URL chahe jo bhi ho, loader aur intro
   // dono dikhenge. Session me complete hone ke baad direct page render hoga.
   const [appStage, setAppStage] = useState(() => {
-    const hasSeen = sessionStorage.getItem("creatorly-intro-seen") === "true";
+    const hasSeen = sessionStorage.getItem("jhankoo-intro-seen") === "true";
     
     if (hasSeen) {
       return "home";
@@ -37,7 +37,7 @@ const App = () => {
   const handleLoaderComplete = () => setAppStage("intro");
   
   const handleIntroComplete = () => {
-    sessionStorage.setItem("creatorly-intro-seen", "true");
+    sessionStorage.setItem("jhankoo-intro-seen", "true");
     setHasSeenIntro(true);
     setAppStage("home");
   };

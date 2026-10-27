@@ -107,7 +107,7 @@ useEffect(() => {
     <div className="vibe-loader-screen fixed inset-0 z-50 flex flex-col items-center justify-center bg-creator-bg color-creator-text select-none overflow-hidden font-sans">
       {/* ─── BRAND NAME (TOP LEFT) ─── */}
       <div className="absolute font-caveat top-8 left-8 text-2xl font-bold tracking-wide">
-        Creatorly
+        Jhankoo
       </div>
       {/* ─── CORNER & SIDE AESTHETIC ELEMENTS (Second Image) ─── */}
       {/* Top Right: Sun / Star Doodles */}

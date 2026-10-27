@@ -44,6 +44,29 @@ const ProductCard = ({ product, productIndex, navigate, addToCart, toggleWishlis
   const touchStartX = useRef(0);
   const isSwiping = useRef(false);
 
+
+
+
+
+  const productPrice = Math.max(0, Number(product?.productPrice) || 0);
+  /*
+  const shippingCost = Math.max(0, Number(product?.shippingCost) || 0);
+
+  const shippingAvailable = product?.shippingAvailable === true;
+  const shippingIncluded = product?.shippingIncluded === true;
+  */
+
+  const totalPrice = productPrice;
+
+  const formatPrice = (price) =>
+    `₹${Number(price).toLocaleString("en-IN")}`;
+
+
+
+
+
+
+
   const nextImage = (event) => {
     event?.stopPropagation();
 
@@ -104,17 +127,18 @@ const ProductCard = ({ product, productIndex, navigate, addToCart, toggleWishlis
   const isOutOfStock = product?.stocks !== undefined && product?.stocks !== null && Number(product.stocks) <= 0;
 
   return (
-    <article
+  <article
       onClick={openProduct}
-      className="publicstore-product-card group relative cursor-pointer overflow-hidden rounded-[5px] border border-creator-primary/15 bg-white shadow-[0_4px_16px_rgba(95,111,101,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-creator-accent/60 hover:shadow-[0_14px_28px_rgba(95,111,101,0.16)]"
+      className="publicstore-product-card group relative cursor-pointer overflow-hidden rounded-xl border border-creator-primary/15 bg-white shadow-[0_4px_16px_rgba(95,111,101,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-creator-accent/60 hover:shadow-[0_14px_28px_rgba(95,111,101,0.16)]"
     >
-      {/* ================================================== */}
       {/* PRODUCT IMAGE */}
-      {/* ================================================== */}
 
-      <div className="relative aspect-square overflow-hidden bg-creator-bg-butter touch-pan-y" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
-        {/* IMAGE SLIDER */}
-
+      <div
+        className="relative aspect-square overflow-hidden bg-creator-bg-butter touch-pan-y"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
         <div
           className="flex h-full transition-transform duration-500 ease-out"
           style={{
@@ -123,7 +147,10 @@ const ProductCard = ({ product, productIndex, navigate, addToCart, toggleWishlis
         >
           {images.length > 0 ? (
             images.map((image, index) => (
-              <div key={`${image}-${index}`} className="h-full w-full shrink-0">
+              <div
+                key={`${image}-${index}`}
+                className="h-full w-full shrink-0"
+              >
                 <img
                   src={image}
                   alt={`${product?.productName || "Product"} ${index + 1}`}
@@ -141,138 +168,166 @@ const ProductCard = ({ product, productIndex, navigate, addToCart, toggleWishlis
           )}
         </div>
 
-        {/* SOFT IMAGE OVERLAY */}
-
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
-        {/* HEART */}
+        {/* WISHLIST */}
 
         <button
+          type="button"
           onClick={(event) => {
             event.stopPropagation();
             toggleWishlist(product);
           }}
           aria-label={isWishlisted ? "Remove from wishlist" : "Save product"}
-          className="absolute right-2.5 top-2.5 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-creator-text shadow-sm backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:-rotate-6 active:scale-90 cursor-pointer"
+          className="absolute right-2.5 top-2.5 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-creator-text shadow-sm backdrop-blur-sm transition-all duration-300 hover:scale-110 active:scale-90"
         >
-          <Heart size={15} fill={isWishlisted ? "currentColor" : "none"} className={isWishlisted ? "text-creator-pink" : "text-creator-text"} />
+          <Heart
+            size={15}
+            fill={isWishlisted ? "currentColor" : "none"}
+            className={isWishlisted ? "text-creator-pink" : "text-creator-text"}
+          />
         </button>
 
         {/* CUSTOMIZABLE */}
 
         {product?.customization && (
-          <span className="absolute left-2.5 top-2.5 rounded-full bg-creator-accent/85 px-2 py-1 text-[8px] font-semibold uppercase tracking-[0.08em] text-creator-text shadow-sm backdrop-blur">
+          <span className="absolute left-2.5 top-2.5 rounded-full bg-creator-accent/90 px-2 py-1 text-[8px] font-semibold uppercase tracking-wide text-creator-text shadow-sm backdrop-blur">
             Customizable
           </span>
         )}
 
-        {/* IMAGE NUMBER */}
+        {/* IMAGE COUNT */}
 
         {images.length > 1 && (
-          <span className="absolute bottom-3 left-3 rounded-full bg-black/50 px-2.5 py-1 text-[9px] font-medium text-white backdrop-blur">
+          <span className="absolute bottom-3 left-3 rounded-full bg-black/55 px-2.5 py-1 text-[9px] font-medium text-white backdrop-blur">
             {activeImage + 1}/{images.length}
           </span>
         )}
 
-        {/* DESKTOP ARROWS */}
+        {/* IMAGE NAVIGATION */}
 
         {images.length > 1 && (
           <>
             <button
+              type="button"
+              aria-label="Previous image"
               onClick={previousImage}
-              className="absolute left-2 top-1/2 hidden h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow-sm transition-all hover:scale-110 sm:flex opacity-0 group-hover:opacity-100"
+              className="absolute left-2 top-1/2 hidden h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow-sm transition-all hover:scale-110 sm:flex sm:opacity-0 sm:group-hover:opacity-100"
             >
               <ChevronLeft size={15} />
             </button>
 
             <button
+              type="button"
+              aria-label="Next image"
               onClick={nextImage}
-              className="absolute right-2 top-1/2 hidden h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow-sm transition-all hover:scale-110 sm:flex opacity-0 group-hover:opacity-100"
+              className="absolute right-2 top-1/2 hidden h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow-sm transition-all hover:scale-110 sm:flex sm:opacity-0 sm:group-hover:opacity-100"
             >
               <ChevronRight size={15} />
             </button>
           </>
         )}
 
-        {/* DOTS */}
+        {/* IMAGE DOTS */}
 
         {images.length > 1 && (
           <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1">
             {images.map((_, index) => (
               <button
+                type="button"
                 key={index}
+                aria-label={`View image ${index + 1}`}
                 onClick={(event) => {
                   event.stopPropagation();
                   setActiveImage(index);
                 }}
-                className={`h-1.5 rounded-full transition-all duration-300 ${activeImage === index ? "w-4 bg-white" : "w-1.5 bg-white/60"}`}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  activeImage === index
+                    ? "w-4 bg-white"
+                    : "w-1.5 bg-white/60"
+                }`}
               />
             ))}
           </div>
         )}
       </div>
 
-      {/* ================================================== */}
-      {/* PRODUCT INFO */}
-      {/* ================================================== */}
+{/* PRODUCT INFORMATION */}
 
-      <div className="px-3  sm:p-3.5">
-        <div className="flex items-start justify-between gap-2">
-          <span className="truncate rounded-full bg-creator-bg px-2 py-1 text-[8px] font-semibold uppercase tracking-[0.08em] text-creator-primary">{product?.category || "Handmade"}</span>
+<div className="p-3">
+  {/* CATEGORY */}
+  <div className="flex items-center justify-between gap-2">
+    <span className="truncate text-[10px] font-medium text-creator-primary">
+      {product?.category || "Handmade"}
+    </span>
 
-          {product?.size && <span className="text-[10px] text-creator-text/40">{product.size}</span>}
-        </div>
+    {product?.size && (
+      <span className="shrink-0 text-[10px] text-creator-text/50">
+        {product.size}
+      </span>
+    )}
+  </div>
 
-        <h3 className="mt-0.5 truncate font-caveat text-[10px] font-semibold text-creator-text sm:text-sm uppercase">{product?.productName}</h3>
+  {/* PRODUCT NAME */}
+  <h3 className="mt-1 truncate text-sm font-semibold text-creator-text">
+    {product?.productName}
+  </h3>
 
-        <p className="mt-0.5 line-clamp-2 min-h-8 text-[10px] leading-4 text-creator-text/50">{product?.productDescription || "Handmade with care and love."}</p>
+  {/* PRICE */}
+  <div className="mt-2 flex items-end justify-between gap-2">
+    <div className="min-w-0">
+      <p className="text-[10px] text-creator-text/50">
+        Price
+      </p>
 
-        {/* PRICE */}
+      <strong className="text-lg font-semibold leading-tight text-creator-text">
+        {formatPrice(totalPrice)}
+      </strong>
+    </div>
 
-        <div >
-          <strong className="font-serif text-base text-creator-text sm:text-lg">₹{Number(product?.productPrice || 0).toLocaleString("en-IN")}</strong>
-          {product?.shippingAvailable && (
-            <p className="mt-1 text-[9px] font-medium text-creator-text/50">
-              {product.shippingIncluded ? "Shipping included" : `+ ₹${Number(product.shippingCost || 0).toLocaleString("en-IN")} shipping`}
-            </p>
-          )}
+    {/* Shipping display is temporarily disabled. */}
+  </div>
 
-          <button
-            disabled={isOutOfStock}
-            onClick={(event) => {
-              event.stopPropagation();
+  {/* DESCRIPTION */}
+  <p className="mt-1.5 line-clamp-2 text-[11px] leading-4 text-creator-text/55">
+    {product?.productDescription || "Handmade with care and love."}
+  </p>
 
-              if (!isOutOfStock) {
-                addToCart(product);
-              }
-            }}
-            className={`flex h-9 cursor-pointer w-full items-center justify-center gap-1.5 rounded-lg text-[10px] font-semibold text-white transition-all duration-300 ${isOutOfStock ? "cursor-not-allowed bg-neutral-300" : "bg-creator-primary hover:bg-creator-text active:scale-[0.98]"}`}
-          >
-            <ShoppingCart size={15} />
-            {isOutOfStock ? "Out of stock" : "Add to cart"}
-          </button>
-        </div>
+  {/* ADD TO CART */}
+  <button
+    type="button"
+    disabled={isOutOfStock}
+    onClick={(event) => {
+      event.stopPropagation();
 
-        {/* STOCK */}
+      if (!isOutOfStock) {
+        addToCart(product);
+      }
+    }}
+    className={`mt-3 flex h-9 w-full items-center justify-center gap-2 rounded-lg text-xs font-medium transition-colors ${
+      isOutOfStock
+        ? "cursor-not-allowed bg-neutral-100 text-neutral-400"
+        : "bg-creator-primary text-white hover:bg-creator-text"
+    }`}
+  >
+    <ShoppingCart size={14} />
+    {isOutOfStock ? "Out of stock" : "Add to cart"}
+  </button>
 
-        {product?.stocks !== undefined && product?.stocks !== null && (
-          <div className="mt-2 flex items-center gap-1.5">
-            {isOutOfStock ? (
-              <>
-                <X size={11} className="text-red-500" />
+  {/* STOCK */}
+  {product?.stocks !== undefined && product?.stocks !== null && (
+    <p
+      className={`mt-2 text-center text-[10px] ${
+        isOutOfStock ? "text-red-500" : "text-creator-text/45"
+      }`}
+    >
+      {isOutOfStock
+        ? "Currently unavailable"
+        : `${product.stocks} available`}
+    </p>
+  )}
+</div>
 
-                <span className="text-[9px] text-red-500">Out of stock</span>
-              </>
-            ) : (
-              <>
-                <CheckCircle2 size={11} className="text-green-600" />
-
-                <span className="text-[9px] text-creator-text/45">{product.stocks} available</span>
-              </>
-            )}
-          </div>
-        )}
-      </div>
     </article>
   );
 };
@@ -285,7 +340,6 @@ const PublicStore = () => {
   const { storeName } = useParams();
   const validStoreName = typeof storeName === "string" && storeName.trim() && storeName !== "undefined" && storeName !== "null" ? storeName.trim() : null;
 
-  
   const navigate = useNavigate();
   const pageRef = useRef(null);
 
@@ -314,54 +368,57 @@ const PublicStore = () => {
 
   const filteredProducts = activeCategory === "All" ? products : products.filter((product) => product.category?.toLowerCase() === activeCategory.toLowerCase());
 
-  useGSAP(() => {
-    const sections = [
-      { selector: ".publicstore-hero", x: -55, y: 0 },
-      { selector: ".publicstore-profile", x: 55, y: 0 },
-      { selector: ".publicstore-collection", x: -45, y: 25 },
-      { selector: ".publicstore-empty", x: 45, y: 25 },
-      { selector: ".publicstore-products", x: -45, y: 25 },
-      { selector: ".publicstore-cta", x: 45, y: 25 },
-      { selector: ".publicstore-footer", x: 0, y: 35 },
-    ];
+  useGSAP(
+    () => {
+      const sections = [
+        { selector: ".publicstore-hero", x: -55, y: 0 },
+        { selector: ".publicstore-profile", x: 55, y: 0 },
+        { selector: ".publicstore-collection", x: -45, y: 25 },
+        { selector: ".publicstore-empty", x: 45, y: 25 },
+        { selector: ".publicstore-products", x: -45, y: 25 },
+        { selector: ".publicstore-cta", x: 45, y: 25 },
+        { selector: ".publicstore-footer", x: 0, y: 35 },
+      ];
 
-    sections.forEach(({ selector, x, y }) => {
-      const element = document.querySelector(selector);
-      if (!element) return;
+      sections.forEach(({ selector, x, y }) => {
+        const element = document.querySelector(selector);
+        if (!element) return;
 
-      gsap.from(element, {
-        x,
-        y,
-        opacity: 0,
-        duration: 0.7,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: element,
-          start: "top 82%",
-          toggleActions: "play none none none",
-          once: true,
-        },
+        gsap.from(element, {
+          x,
+          y,
+          opacity: 0,
+          duration: 0.7,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: element,
+            start: "top 82%",
+            toggleActions: "play none none none",
+            once: true,
+          },
+        });
       });
-    });
 
-    const productCards = gsap.utils.toArray(".publicstore-product-card");
+      const productCards = gsap.utils.toArray(".publicstore-product-card");
 
-    productCards.forEach((card, index) => {
-      gsap.from(card, {
-        y: 35,
-        opacity: 0,
-        duration: 0.55,
-        delay: (index % 4) * 0.04,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: card,
-          start: "top 88%",
-          toggleActions: "play none none none",
-          once: true,
-        },
+      productCards.forEach((card, index) => {
+        gsap.from(card, {
+          y: 35,
+          opacity: 0,
+          duration: 0.55,
+          delay: (index % 4) * 0.04,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: card,
+            start: "top 88%",
+            toggleActions: "play none none none",
+            once: true,
+          },
+        });
       });
-    });
-  }, { scope: pageRef.current || undefined, dependencies: [loading] });
+    },
+    { scope: pageRef.current || undefined, dependencies: [loading] },
+  );
 
   // ==========================================================
   // CART
@@ -383,7 +440,7 @@ const PublicStore = () => {
     });
 
     setCartCount(cart.reduce((total, item) => total + Number(item.quantity || 0), 0));
-    window.dispatchEvent(new Event("creatorly-shopping-updated"));
+    window.dispatchEvent(new Event("jhankoo-shopping-updated"));
     toast.success(`${product?.productName || "Product"} added to cart`, {
       autoClose: 1800,
     });
@@ -397,7 +454,7 @@ const PublicStore = () => {
     const nextWishlist = Array.isArray(result?.wishlist) ? result.wishlist : getWishlist(validStoreName);
 
     setWishlistIds(nextWishlist.map((item) => item.productId || item._id));
-    window.dispatchEvent(new Event("creatorly-shopping-updated"));
+    window.dispatchEvent(new Event("jhankoo-shopping-updated"));
     toast.success(wasWishlisted ? "Removed from wishlist" : "Added to wishlist", {
       autoClose: 1800,
     });
@@ -407,8 +464,6 @@ const PublicStore = () => {
   // ==========================================================
 
   const fetchStoreData = async () => {
-   
-
     if (!validStoreName) {
       setLoading(false);
       setError("This store link is invalid.");
@@ -420,8 +475,6 @@ const PublicStore = () => {
       setError("");
 
       const response = await API.get(`/api/shop/${encodeURIComponent(validStoreName)}`);
-
-
 
       setStore(response.data.store);
       setProducts(response.data.products || []);
@@ -451,10 +504,10 @@ const PublicStore = () => {
 
     syncShopping();
 
-    window.addEventListener("creatorly-shopping-updated", syncShopping);
+    window.addEventListener("jhankoo-shopping-updated", syncShopping);
 
     return () => {
-      window.removeEventListener("creatorly-shopping-updated", syncShopping);
+      window.removeEventListener("jhankoo-shopping-updated", syncShopping);
     };
   }, [validStoreName]);
   // ==========================================================
@@ -478,7 +531,7 @@ const PublicStore = () => {
 
     const number = String(store.whatsappNumber).replace(/\D/g, "");
 
-    const message = encodeURIComponent(`Hi! I found ${store?.storeName || "your store"} on Creatorly and would love to know more about your products. ✨`);
+    const message = encodeURIComponent(`Hi! I found ${store?.storeName || "your store"} on Jhankoo and would love to know more about your products. ✨`);
 
     window.open(`https://wa.me/${number}?text=${message}`, "_blank", "noopener,noreferrer");
   };
@@ -490,13 +543,13 @@ const PublicStore = () => {
   const shareStore = async () => {
     const currentUrl = window.location.href;
 
-    const storeTitle = store?.storeName ? `${store.storeName} on Creatorly` : "Check out this store on Creatorly";
+    const storeTitle = store?.storeName ? `${store.storeName} on Jhankoo` : "Check out this store on Jhankoo";
 
     if (navigator.share) {
       try {
         await navigator.share({
           title: storeTitle,
-          text: "Explore this creator store on Creatorly ✨",
+          text: "Explore this creator store on Jhankoo ✨",
           url: currentUrl,
         });
       } catch (error) {
@@ -572,7 +625,7 @@ const PublicStore = () => {
           <p className="mt-3 text-sm leading-6 text-creator-text/55">{error}</p>
 
           <button onClick={() => navigate("/")} className="mt-7 rounded-full bg-creator-text px-6 py-3 text-xs font-semibold text-white transition hover:-translate-y-0.5 hover:shadow-lg">
-            Back to Creatorly
+            Back to Jhankoo
           </button>
         </div>
       </div>
@@ -632,7 +685,14 @@ const PublicStore = () => {
           {/* HERO IMAGE */}
 
           <div className="relative min-h-[270px] overflow-hidden lg:min-h-[440px]">
-            <img src={getImageUrl(store?.bannerImage, bannerImg)} alt="Store banner" loading="eager" fetchPriority="high" decoding="sync" className="h-full w-full object-cover transition-transform duration-[1200ms] hover:scale-[1.035]" />
+            <img
+              src={getImageUrl(store?.bannerImage, bannerImg)}
+              alt="Store banner"
+              loading="eager"
+              fetchPriority="high"
+              decoding="sync"
+              className="h-full w-full object-cover transition-transform duration-[1200ms] hover:scale-[1.035]"
+            />
 
             <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
 
@@ -838,12 +898,24 @@ const PublicStore = () => {
             {/* small decorative line */}
 
             {/* <div className="pointer-events-none absolute -left-5 top-0 hidden rotate-[-8deg] font-caveat text-sm text-creator-text/40 lg:block">made slowly ♡</div> */}
+            
 
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4 lg:gap-3">
               {filteredProducts.map((product, index) => (
-                <ProductCard key={product._id} product={product} productIndex={index} navigate={navigate} addToCart={addToCart} toggleWishlist={toggleWishlist} isWishlisted={wishlistIds.includes(product._id)} />
+                <ProductCard
+                  key={product._id}
+                  product={product}
+                  productIndex={index}
+                  navigate={navigate}
+                  addToCart={addToCart}
+                  toggleWishlist={toggleWishlist}
+                  isWishlisted={wishlistIds.includes(product._id)}
+                  
+                />
               ))}
             </div>
+
+            
           </section>
         )}
 
@@ -943,7 +1015,7 @@ const PublicStore = () => {
 
           <div>
             <h2 className="font-serif text-2xl">
-              Creatorly
+              Jhankoo
               <span className="ml-1 text-xs">✦</span>
             </h2>
 
@@ -979,13 +1051,13 @@ const PublicStore = () => {
         {/* COPYRIGHT */}
 
         <div className="mx-auto mt-8 flex max-w-6xl flex-col gap-2 border-t border-white/10 pt-6 text-[9px] text-white/35 sm:flex-row sm:items-center sm:justify-between">
-          <span>© {new Date().getFullYear()} Creatorly</span>
+          <span>© {new Date().getFullYear()} Jhankoo</span>
 
           <span>Made for small creators.</span>
         </div>
       </footer>
       {/* End Footer */}
-      <Footer/>
+      <Footer />
     </div>
   );
 };
