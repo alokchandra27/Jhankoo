@@ -4,10 +4,10 @@ import { ArrowRight } from "lucide-react";
 import { toast } from "react-toastify";
 import API from "../components/API/API";
 import { useNavigate } from "react-router-dom";
-import  { useRef } from "react";
+import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
-  
+
 const Auth = ({ setIsLoggedIn }) => {
   const [isLogin, setIsLogin] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -17,20 +17,29 @@ const Auth = ({ setIsLoggedIn }) => {
 
   const rightDivRef = useRef(null);
 
-
   const submitHandler = (e) => {
     e.preventDefault();
 
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData);
 
+    if (!isLogin) {
+      data.fullName = {
+        firstName: data.firstName,
+        lastName: data.name,
+      };
+
+      delete data.firstName;
+      delete data.name;
+    }
+
     if (!data.email || !data.password) {
       toast.info("Please fill in your email and password");
       return;
     }
 
-    if (!isLogin && !data.name) {
-      toast.info("Your name helps personalize your experience 🙂");
+    if (!isLogin && !data.fullName.firstName) {
+      toast.info("Please enter your first name.");
       return;
     }
 
@@ -82,14 +91,17 @@ const Auth = ({ setIsLoggedIn }) => {
     }
   };
 
-  useGSAP(() => {
-    gsap.from(rightDivRef.current, {
-      x: 80,
-      opacity: 0,
-      duration: 0.8,
-      ease: "power3.out",
-    });
-  }, { scope: rightDivRef });
+  useGSAP(
+    () => {
+      gsap.from(rightDivRef.current, {
+        x: 80,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power3.out",
+      });
+    },
+    { scope: rightDivRef },
+  );
 
   return (
     <div className="h-screen w-full overflow-hidden bg-creator-bg text-creator-text lg:-mt-10">
@@ -98,7 +110,10 @@ const Auth = ({ setIsLoggedIn }) => {
         <LeftDiv />
 
         {/*RIGHT (SELLER REGISTER PANEL) */}
-        <div ref={rightDivRef} className="w-full lg:w-1/2 h-screen lg:h-screen flex items-center justify-center px-4 sm:px-8 py-6 lg:py-0 border-t-0 lg:border-t-0 lg:border-l-[1px] border-creator-accent relative bg-creator-bg overflow-hidden">
+        <div
+          ref={rightDivRef}
+          className="w-full lg:w-1/2 h-screen lg:h-screen flex items-center justify-center px-4 sm:px-8 py-6 lg:py-0 border-t-0 lg:border-t-0 lg:border-l-[1px] border-creator-accent relative bg-creator-bg overflow-hidden"
+        >
           {/* Form Main Container */}
           <div className=" w-full max-w-[440px] bg-white rounded-2xl px-5 py-0 sm:p-7 shadow-sm border border-neutral-100/80 flex flex-col relative">
             <div className="text-center mb-4">

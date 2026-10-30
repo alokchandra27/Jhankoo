@@ -1,3 +1,4 @@
+
 const sellerModel = require("../models/seller.model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
@@ -14,45 +15,85 @@ const cookieOptions = {
 async function registerSeller(req, res) {
   try {
     const {
-      fullName: { firstName, lastName },
+      fullName,
       email,
       username,
       password,
       storeName,
     } = req.body;
 
-    const existingUser = await sellerModel.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ message: "User already exists" });
+    // Validate required fields
+    if (
+      !fullName?.firstName?.trim() ||
+      !email?.trim() ||
+      !username?.trim() ||
+      !password ||
+      !storeName?.trim()
+    ) {
+      return res.status(400).json({
+        message: "Please provide all required registration details.",
+      });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10); 
+    const existingUser = await sellerModel.findOne({
+      $or: [
+        { email: email.trim().toLowerCase() },
+        { username: username.trim() },
+      ],
+    });
+
+    if (existingUser) {
+      return res.status(400).json({
+        message:
+          existingUser.email === email.trim().toLowerCase()
+            ? "Email already registered."
+            : "Username already taken.",
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const newSeller = await sellerModel.create({
-      fullName: { firstName, lastName },
-      email,
-      username,
+      fullName: {
+        firstName: fullName.firstName.trim(),
+        lastName: fullName.lastName?.trim() || "",
+      },
+      email: email.trim().toLowerCase(),
+      username: username.trim(),
       password: hashedPassword,
-      storeName,
+      storeName: storeName.trim(),
     });
 
     const sellerResponse = newSeller.toObject();
     delete sellerResponse.password;
 
-    const token = jwt.sign({ id: newSeller._id }, process.env.JWT_SECRET, {
-      expiresIn: "14d",
-    });
+    const token = jwt.sign(
+      { id: newSeller._id },
+      process.env.JWT_SECRET,
+      { expiresIn: "14d" }
+    );
 
     res.cookie("token", token, cookieOptions);
 
-    res.status(201).json({
+    return res.status(201).json({
       message: "User registered successfully",
       seller: sellerResponse,
       token,
     });
+
   } catch (error) {
-    console.error("REGISTRATION ERROR DETECTED:", error); 
-    res.status(500).json({ message: "Server error during registration", error: error.message });
+    console.error("REGISTRATION ERROR DETECTED:", error);
+
+    if (error.code === 11000) {
+      return res.status(409).json({
+        message: "Email or username already exists.",
+      });
+    }
+
+    return res.status(500).json({
+      message: "Server error during registration",
+      error: error.message,
+    });
   }
 }
 
@@ -93,7 +134,7 @@ async function loginSeller(req, res) {
 
 async function getSellerProfile(req, res) {
   try {
-    const sellerId = req.user?.id || req.user?._id; // Safety Fix
+    const sellerId = req.user?.id || req.user?._id;
     const seller = await sellerModel.findById(sellerId).select("-password");
 
     if (!seller) {
@@ -112,7 +153,7 @@ async function getSellerProfile(req, res) {
 
 async function updateSellerProfile(req, res) {
   try {
-    const sellerId = req.user?.id || req.user?._id; // Safety Fix
+    const sellerId = req.user?.id || req.user?._id;
     const { fullName, email, username, currentPassword, newPassword } = req.body;
 
     let seller = await sellerModel.findById(sellerId);
@@ -129,8 +170,8 @@ async function updateSellerProfile(req, res) {
       }
 
       if (!currentPassword || !newPassword) {
-        return res.status(400).json({ 
-          message: "Both the current and new passwords are required to change your password." 
+        return res.status(400).json({
+          message: "Both the current and new passwords are required to change your password.",
         });
       }
 
@@ -155,6 +196,7 @@ async function updateSellerProfile(req, res) {
         lastName: fullName.lastName || seller.fullName.lastName,
       };
     }
+
     if (email) seller.email = email;
     if (username) seller.username = username;
 
@@ -176,7 +218,7 @@ async function updateSellerProfile(req, res) {
 
 async function deleteSellerProfile(req, res) {
   try {
-    const sellerId = req.user?.id || req.user?._id; // Safety Fix
+    const sellerId = req.user?.id || req.user?._id;
 
     const seller = await sellerModel.findByIdAndDelete(sellerId);
 
@@ -194,7 +236,6 @@ async function deleteSellerProfile(req, res) {
       timestamp: new Date(),
     });
 
-    // Fix: Delete response me se password safe kiya
     const sellerResponse = seller.toObject();
     delete sellerResponse.password;
 
@@ -213,6 +254,7 @@ async function logoutSeller(req, res) {
     const sellerId = req.user?.id || req.user?._id;
 
     const seller = await sellerModel.findById(sellerId);
+
     if (!seller) {
       return res.status(404).json({ message: "Seller not found" });
     }
