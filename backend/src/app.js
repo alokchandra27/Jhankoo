@@ -64,19 +64,19 @@ app.get("/", (req, res) => {
     }
   });
 });
-console.log("FRONTEND DIST PATH:", FRONTEND_DIST);
-console.log(
-  "FRONTEND INDEX EXISTS:",
-  require("fs").existsSync(path.join(FRONTEND_DIST, "index.html"))
-);
+// console.log("FRONTEND DIST PATH:", FRONTEND_DIST);
+// console.log(
+//   "FRONTEND INDEX EXISTS:",
+//   require("fs").existsSync(path.join(FRONTEND_DIST, "index.html"))
+// );
 
-console.log(
-  "DEPLOYED HTML ASSETS:",
-  require("fs").readFileSync(
-    path.join(FRONTEND_DIST, "index.html"),
-    "utf8"
-  ).match(/assets\/index-[^"]+\.(?:js|css)/g)
-);
+// console.log(
+//   "DEPLOYED HTML ASSETS:",
+//   require("fs").readFileSync(
+//     path.join(FRONTEND_DIST, "index.html"),
+//     "utf8"
+//   ).match(/assets\/index-[^"]+\.(?:js|css)/g)
+// );
 
 // 1. Static built files ko serve karna (CSS, JS, WebP Images)
 app.use("/assets", express.static(path.join(FRONTEND_DIST, "assets")));
