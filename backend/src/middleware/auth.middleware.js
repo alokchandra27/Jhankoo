@@ -18,6 +18,8 @@ async function authUser(req, res, next) {
   //     }
   //   }
 
+  //token
+
   if (!token) {
     return res.status(401).json({
       message: "Unauthorized Access , Please Login First",
