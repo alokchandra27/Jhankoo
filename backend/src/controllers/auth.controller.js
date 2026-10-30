@@ -13,20 +13,20 @@ async function registerSeller(req, res) {
       storeName,
     } = req.body;
 
-
-
     const existingUser = await sellerModel.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
 
+    // FIX 1: .select() hata diya
+    const hashedPassword = await bcrypt.hash(password, 10); 
 
-    const hashedPassword = await bcrypt.hash(password, 10).select("password");
-
+    // FIX 2: password ko create function me add kar diya
     const newSeller = await sellerModel.create({
       fullName: { firstName, lastName },
       email,
       username,
+      password: hashedPassword, // Ab password save hoga
       storeName,
     });
 
@@ -36,9 +36,6 @@ async function registerSeller(req, res) {
 
     const cookieOptions = {
       httpOnly: true,
-    //   secure: process.env.NODE_ENV === "production",
-    //   sameSite: "strict",
-    //   maxAge: 14 * 24 * 60 * 60 * 1000, // 14 days
     };
 
     res.cookie("token", token, cookieOptions);
@@ -49,10 +46,12 @@ async function registerSeller(req, res) {
       token,
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error during registration" });
+    // Isse Render logs me exact galti dikhegi agar kuch aur hua toh
+    console.error("REGISTRATION ERROR DETECTED:", error); 
+    res.status(500).json({ message: "Server error during registration", error: error.message });
   }
 }
+
 
 async function loginSeller(req, res) {
   try {
