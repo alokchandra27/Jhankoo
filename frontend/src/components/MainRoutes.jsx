@@ -59,7 +59,7 @@ const JhankooPageLoader = () => {
 const LegacyPublicStoreRedirect = () => {
   const { storeName } = useParams();
 
-  return <Navigate to={`/publicstore/${encodeURIComponent(storeName)}`} replace />;
+  return <Navigate to={`/publicstore/${encodeURIComponent(username)}`} replace />;
 };
 
 
@@ -94,13 +94,13 @@ const MainRoutes = ({ isLoggedIn, setIsLoggedIn }) => {
         {/* 2. PERSONAL ISOLATED SELLER STOREFRONT */}
       
 
-        <Route path="/publistore/:storeName" element={<LegacyPublicStoreRedirect />} />
+        <Route path="/publistore/:username" element={<LegacyPublicStoreRedirect />} />
 
         <Route path="/publicstore" element={<Navigate to="/" replace />} />
 
-        <Route path="/publicstore/:storeName" element={<PublicStore />} />
+        <Route path="/publicstore/:username" element={<PublicStore />} />
 
-        <Route path="/publicstore/:storeName/product/:id" element={<ProductDetails />} />
+        <Route path="/publicstore/:username/product/:id" element={<ProductDetails />} />
 
 
         {/* 3. SELLER CONTROL PATHS */}
@@ -112,9 +112,9 @@ const MainRoutes = ({ isLoggedIn, setIsLoggedIn }) => {
 
         <Route path="/products/edit/:productId" element={<EditProduct />} />
 
-        <Route path="/publicstore/:storeName/cart" element={<Cart />} />
+        <Route path="/publicstore/:username/cart" element={<Cart />} />
 
-        <Route path="/publicstore/:storeName/wishlist" element={<Wishlist />} />
+        <Route path="/publicstore/:username/wishlist" element={<Wishlist />} />
 
         {/* 4. CATCH-ALL ROUTE FOR 404 PAGE */}
 

@@ -4,6 +4,7 @@ import instagramImg from "../assets/instagram.webp";
 import facebookImg from "../assets/facebook.webp";
 import whatsappImg from "../assets/whatsapp.webp";
 import redcolorImg from "../assets/redcolor.webp";
+import profilePicImg from "../assets/profile-picture.png";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -44,10 +45,6 @@ const ProductCard = ({ product, productIndex, navigate, addToCart, toggleWishlis
   const touchStartX = useRef(0);
   const isSwiping = useRef(false);
 
-
-
-
-
   const productPrice = Math.max(0, Number(product?.productPrice) || 0);
   /*
   const shippingCost = Math.max(0, Number(product?.shippingCost) || 0);
@@ -58,14 +55,7 @@ const ProductCard = ({ product, productIndex, navigate, addToCart, toggleWishlis
 
   const totalPrice = productPrice;
 
-  const formatPrice = (price) =>
-    `₹${Number(price).toLocaleString("en-IN")}`;
-
-
-
-
-
-
+  const formatPrice = (price) => `₹${Number(price).toLocaleString("en-IN")}`;
 
   const nextImage = (event) => {
     event?.stopPropagation();
@@ -127,18 +117,13 @@ const ProductCard = ({ product, productIndex, navigate, addToCart, toggleWishlis
   const isOutOfStock = product?.stocks !== undefined && product?.stocks !== null && Number(product.stocks) <= 0;
 
   return (
-  <article
+    <article
       onClick={openProduct}
       className="publicstore-product-card group relative cursor-pointer overflow-hidden rounded-xl border border-creator-primary/15 bg-white shadow-[0_4px_16px_rgba(95,111,101,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-creator-accent/60 hover:shadow-[0_14px_28px_rgba(95,111,101,0.16)]"
     >
       {/* PRODUCT IMAGE */}
 
-      <div
-        className="relative aspect-square overflow-hidden bg-creator-bg-butter touch-pan-y"
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      >
+      <div className="relative aspect-square overflow-hidden bg-creator-bg-butter touch-pan-y" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
         <div
           className="flex h-full transition-transform duration-500 ease-out"
           style={{
@@ -147,10 +132,7 @@ const ProductCard = ({ product, productIndex, navigate, addToCart, toggleWishlis
         >
           {images.length > 0 ? (
             images.map((image, index) => (
-              <div
-                key={`${image}-${index}`}
-                className="h-full w-full shrink-0"
-              >
+              <div key={`${image}-${index}`} className="h-full w-full shrink-0">
                 <img
                   src={image}
                   alt={`${product?.productName || "Product"} ${index + 1}`}
@@ -181,11 +163,7 @@ const ProductCard = ({ product, productIndex, navigate, addToCart, toggleWishlis
           aria-label={isWishlisted ? "Remove from wishlist" : "Save product"}
           className="absolute right-2.5 top-2.5 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-creator-text shadow-sm backdrop-blur-sm transition-all duration-300 hover:scale-110 active:scale-90"
         >
-          <Heart
-            size={15}
-            fill={isWishlisted ? "currentColor" : "none"}
-            className={isWishlisted ? "text-creator-pink" : "text-creator-text"}
-          />
+          <Heart size={15} fill={isWishlisted ? "currentColor" : "none"} className={isWishlisted ? "text-creator-pink" : "text-creator-text"} />
         </button>
 
         {/* CUSTOMIZABLE */}
@@ -241,93 +219,64 @@ const ProductCard = ({ product, productIndex, navigate, addToCart, toggleWishlis
                   event.stopPropagation();
                   setActiveImage(index);
                 }}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  activeImage === index
-                    ? "w-4 bg-white"
-                    : "w-1.5 bg-white/60"
-                }`}
+                className={`h-1.5 rounded-full transition-all duration-300 ${activeImage === index ? "w-4 bg-white" : "w-1.5 bg-white/60"}`}
               />
             ))}
           </div>
         )}
       </div>
 
-{/* PRODUCT INFORMATION */}
+      {/* PRODUCT INFORMATION */}
 
-<div className="p-3">
-  {/* CATEGORY */}
-  <div className="flex items-center justify-between gap-2">
-    <span className="truncate text-[10px] font-medium text-creator-primary">
-      {product?.category || "Handmade"}
-    </span>
+      <div className="p-3">
+        {/* CATEGORY */}
+        <div className="flex items-center justify-between gap-2">
+          <span className="truncate text-[10px] font-medium text-creator-primary">{product?.category || "Handmade"}</span>
 
-    {product?.size && (
-      <span className="shrink-0 text-[10px] text-creator-text/50">
-        {product.size}
-      </span>
-    )}
-  </div>
+          {product?.size && <span className="shrink-0 text-[10px] text-creator-text/50">{product.size}</span>}
+        </div>
 
-  {/* PRODUCT NAME */}
-  <h3 className="mt-1 truncate text-sm font-semibold text-creator-text">
-    {product?.productName}
-  </h3>
+        {/* PRODUCT NAME */}
+        <h3 className="mt-1 truncate text-sm font-semibold text-creator-text">{product?.productName}</h3>
 
-  {/* PRICE */}
-  <div className="mt-2 flex items-end justify-between gap-2">
-    <div className="min-w-0">
-      <p className="text-[10px] text-creator-text/50">
-        Price
-      </p>
+        {/* PRICE */}
+        <div className="mt-2 flex items-end justify-between gap-2">
+          <div className="min-w-0">
+            <p className="text-[10px] text-creator-text/50">Price</p>
 
-      <strong className="text-lg font-semibold leading-tight text-creator-text">
-        {formatPrice(totalPrice)}
-      </strong>
-    </div>
+            <strong className="text-lg font-semibold leading-tight text-creator-text">{formatPrice(totalPrice)}</strong>
+          </div>
 
-    {/* Shipping display is temporarily disabled. */}
-  </div>
+          {/* Shipping display is temporarily disabled. */}
+        </div>
 
-  {/* DESCRIPTION */}
-  <p className="mt-1.5 line-clamp-2 text-[11px] leading-4 text-creator-text/55">
-    {product?.productDescription || "Handmade with care and love."}
-  </p>
+        {/* DESCRIPTION */}
+        <p className="mt-1.5 line-clamp-2 text-[11px] leading-4 text-creator-text/55">{product?.productDescription || "Handmade with care and love."}</p>
 
-  {/* ADD TO CART */}
-  <button
-    type="button"
-    disabled={isOutOfStock}
-    onClick={(event) => {
-      event.stopPropagation();
+        {/* ADD TO CART */}
+        <button
+          type="button"
+          disabled={isOutOfStock}
+          onClick={(event) => {
+            event.stopPropagation();
 
-      if (!isOutOfStock) {
-        addToCart(product);
-      }
-    }}
-    className={`mt-3 flex h-9 w-full items-center justify-center gap-2 rounded-lg text-xs font-medium transition-colors ${
-      isOutOfStock
-        ? "cursor-not-allowed bg-neutral-100 text-neutral-400"
-        : "bg-creator-primary text-white hover:bg-creator-text"
-    }`}
-  >
-    <ShoppingCart size={14} />
-    {isOutOfStock ? "Out of stock" : "Add to cart"}
-  </button>
+            if (!isOutOfStock) {
+              addToCart(product);
+            }
+          }}
+          className={`mt-3 flex h-9 w-full items-center justify-center gap-2 rounded-lg text-xs font-medium transition-colors ${
+            isOutOfStock ? "cursor-not-allowed bg-neutral-100 text-neutral-400" : "bg-creator-primary text-white hover:bg-creator-text"
+          }`}
+        >
+          <ShoppingCart size={14} />
+          {isOutOfStock ? "Out of stock" : "Add to cart"}
+        </button>
 
-  {/* STOCK */}
-  {product?.stocks !== undefined && product?.stocks !== null && (
-    <p
-      className={`mt-2 text-center text-[10px] ${
-        isOutOfStock ? "text-red-500" : "text-creator-text/45"
-      }`}
-    >
-      {isOutOfStock
-        ? "Currently unavailable"
-        : `${product.stocks} available`}
-    </p>
-  )}
-</div>
-
+        {/* STOCK */}
+        {product?.stocks !== undefined && product?.stocks !== null && (
+          <p className={`mt-2 text-center text-[10px] ${isOutOfStock ? "text-red-500" : "text-creator-text/45"}`}>{isOutOfStock ? "Currently unavailable" : `${product.stocks} available`}</p>
+        )}
+      </div>
     </article>
   );
 };
@@ -338,7 +287,13 @@ const ProductCard = ({ product, productIndex, navigate, addToCart, toggleWishlis
 
 const PublicStore = () => {
   const { storeName } = useParams();
-  const validStoreName = typeof storeName === "string" && storeName.trim() && storeName !== "undefined" && storeName !== "null" ? storeName.trim() : null;
+    const validUsername =
+    typeof username === "string" &&
+    username.trim() &&
+    username !== "undefined" &&
+    username !== "null"
+      ? username.trim()
+      : null;
 
   const navigate = useNavigate();
   const pageRef = useRef(null);
@@ -429,7 +384,7 @@ const PublicStore = () => {
   // };
 
   const addToCart = (product) => {
-    const cart = addToCartStorage(validStoreName, {
+    const cart = addToCartStorage(validUsername, {
       ...product,
 
       whatsappNumber: store?.whatsappNumber || "",
@@ -447,11 +402,11 @@ const PublicStore = () => {
   };
 
   const toggleWishlist = (product) => {
-    if (!validStoreName || !product?._id) return;
+    if (!validUsername || !product?._id) return;
 
     const wasWishlisted = wishlistIds.includes(product._id);
-    const result = toggleWishlistStorage(validStoreName, product);
-    const nextWishlist = Array.isArray(result?.wishlist) ? result.wishlist : getWishlist(validStoreName);
+    const result = toggleWishlistStorage(validUsername, product);
+    const nextWishlist = Array.isArray(result?.wishlist) ? result.wishlist : getWishlist(validUsername);
 
     setWishlistIds(nextWishlist.map((item) => item.productId || item._id));
     window.dispatchEvent(new Event("jhankoo-shopping-updated"));
@@ -464,7 +419,7 @@ const PublicStore = () => {
   // ==========================================================
 
   const fetchStoreData = async () => {
-    if (!validStoreName) {
+    if (!validUsername) {
       setLoading(false);
       setError("This store link is invalid.");
       return;
@@ -474,7 +429,7 @@ const PublicStore = () => {
       setLoading(true);
       setError("");
 
-      const response = await API.get(`/api/shop/${encodeURIComponent(validStoreName)}`);
+      const response = await API.get(`/api/shop/${encodeURIComponent(validUsername)}`);
 
       setStore(response.data.store);
       setProducts(response.data.products || []);
@@ -489,14 +444,14 @@ const PublicStore = () => {
 
   useEffect(() => {
     fetchStoreData();
-  }, [validStoreName]);
+  }, [validUsername]);
 
   useEffect(() => {
-    if (!validStoreName) return;
+    if (!validUsername) return;
 
     const syncShopping = () => {
-      const cart = getCart(validStoreName);
-      const wishlist = getWishlist(validStoreName);
+      const cart = getCart(validUsername);
+      const wishlist = getWishlist(validUsername);
 
       setCartCount(cart.reduce((total, item) => total + Number(item.quantity || 0), 0));
       setWishlistIds(wishlist.map((item) => item.productId || item._id));
@@ -509,7 +464,7 @@ const PublicStore = () => {
     return () => {
       window.removeEventListener("jhankoo-shopping-updated", syncShopping);
     };
-  }, [validStoreName]);
+  }, [validUsername]);
   // ==========================================================
   // SOCIAL
   // ==========================================================
@@ -723,7 +678,7 @@ const PublicStore = () => {
 
           <div className="mx-auto h-[115px] w-[115px] shrink-0 rotate-[-2deg] overflow-hidden rounded-full border-[6px] border-white bg-creator-accent shadow-sm transition-all duration-500 hover:rotate-3 hover:scale-105 sm:h-[135px] sm:w-[135px] md:mx-0 md:h-[145px] md:w-[145px]">
             <img
-              src={getImageUrl(store?.storeLogo, "https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?w=300")}
+              src={getImageUrl(store?.storeLogo, profilePicImg)}
               alt={store?.storeName || "Store"}
               loading="eager"
               fetchPriority="high"
@@ -898,7 +853,6 @@ const PublicStore = () => {
             {/* small decorative line */}
 
             {/* <div className="pointer-events-none absolute -left-5 top-0 hidden rotate-[-8deg] font-caveat text-sm text-creator-text/40 lg:block">made slowly ♡</div> */}
-            
 
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4 lg:gap-3">
               {filteredProducts.map((product, index) => (
@@ -910,12 +864,9 @@ const PublicStore = () => {
                   addToCart={addToCart}
                   toggleWishlist={toggleWishlist}
                   isWishlisted={wishlistIds.includes(product._id)}
-                  
                 />
               ))}
             </div>
-
-            
           </section>
         )}
 
@@ -974,7 +925,7 @@ const PublicStore = () => {
 
       <button
         aria-label="Open wishlist"
-        onClick={() => navigate(`/publicstore/${encodeURIComponent(validStoreName)}/wishlist`)}
+        onClick={() => navigate(`/publicstore/${encodeURIComponent(validUsername)}/wishlist`)}
         className="fixed bottom-[88px] right-5 z-40 flex h-12 w-12 items-center justify-center rounded-full border-[3px] border-white bg-white text-creator-text shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-300 hover:scale-110 hover:-rotate-6 hover:shadow-xl active:scale-90"
       >
         <Heart size={20} fill={wishlistIds.length > 0 ? "currentColor" : "none"} className={wishlistIds.length > 0 ? "text-creator-pink" : "text-creator-text"} />
@@ -987,7 +938,7 @@ const PublicStore = () => {
 
       <button
         aria-label="Open cart"
-        onClick={() => navigate(`/publicstore/${encodeURIComponent(validStoreName)}/cart`)}
+        onClick={() => navigate(`/publicstore/${encodeURIComponent(validUsername)}/cart`)}
         className="fixed bottom-6 right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full border-[3px] border-white bg-creator-text text-white shadow-[0_8px_30px_rgba(0,0,0,0.15)] transition-all duration-300 hover:scale-110 hover:rotate-6 hover:shadow-xl active:scale-90"
       >
         <ShoppingCart size={23} />

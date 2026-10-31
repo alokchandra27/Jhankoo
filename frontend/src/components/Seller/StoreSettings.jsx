@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ArrowLeft, Check, ChevronDown, Edit3, Eye, EyeOff, ImagePlus, Loader2, Lock, MessageCircle, Save, Settings, ShieldAlert, Store, Trash2, User, X } from "lucide-react";
+import { ArrowLeft, Check, ChevronDown, Edit3, Eye, EyeOff, ImagePlus, Loader2, Lock, MessageCircle, Save, Settings, Share2, ShieldAlert, Store, Trash2, User, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import API from "../API/API";
 import ProcessAndCompressImage from "./ProcessAndCompressImage";
@@ -86,6 +86,8 @@ export default function StoreSettings() {
     text: "",
   });
 
+  const [storeLinkMessage, setStoreLinkMessage] = useState("");
+
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
@@ -165,6 +167,60 @@ export default function StoreSettings() {
       ...prev,
       [name]: value,
     }));
+  };
+
+  const getStoreLink = () => `${window.location.origin}/publicstore/${encodeURIComponent(storeData.storeName.trim())}`;
+
+  const copyStoreLink = async () => {
+    const storeLink = getStoreLink();
+
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(storeLink);
+      } else {
+        const textArea = document.createElement("textarea");
+        textArea.value = storeLink;
+        textArea.style.position = "fixed";
+        textArea.style.opacity = "0";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        const copied = document.execCommand("copy");
+        document.body.removeChild(textArea);
+
+        if (!copied) {
+          throw new Error("Copy command was not successful.");
+        }
+      }
+
+      setStoreLinkMessage("Store link copied.");
+    } catch (error) {
+      console.error("Copy store link error:", error);
+      setStoreLinkMessage("Unable to copy the store link.");
+    }
+  };
+
+  const shareStoreLink = async () => {
+    const storeLink = getStoreLink();
+
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: storeData.storeName || "My store",
+          text: `Visit ${storeData.storeName || "my store"}`,
+          url: storeLink,
+        });
+        setStoreLinkMessage("Store link shared.");
+        return;
+      }
+
+      await copyStoreLink();
+    } catch (error) {
+      if (error?.name === "AbortError") return;
+
+      console.error("Share store link error:", error);
+      setStoreLinkMessage("Unable to share the store link.");
+    }
   };
 
   const handleImageChange = async (e) => {
@@ -558,6 +614,30 @@ export default function StoreSettings() {
             PAGE INTRO
         ====================================================== */}
         <div className="mb-8">
+          <div className="mb-5 flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onClick={copyStoreLink}
+              disabled={!storeData.storeName.trim()}
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-creator-text/10 bg-creator-bg-butter px-4 py-2.5 text-xs font-bold transition hover:-translate-y-0.5 hover:bg-white hover:shadow-sm disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <Check size={14} />
+              Copy Store Link
+            </button>
+
+            <button
+              type="button"
+              onClick={shareStoreLink}
+              disabled={!storeData.storeName.trim()}
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-creator-primary px-4 py-2.5 text-xs font-bold text-white transition hover:-translate-y-0.5 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <Share2 size={14} />
+              Share Store Link
+            </button>
+
+            {storeLinkMessage && <span className="text-xs font-semibold text-creator-text/55">{storeLinkMessage}</span>}
+          </div>
+
           <p className="font-serif text-sm font-bold text-creator-primary">Manage your shop</p>
 
           <h2 className="mt-1 font-caveat text-3xl font-black tracking-tight sm:text-4xl">Make your store feel like yours.</h2>

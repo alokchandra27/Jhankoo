@@ -5,10 +5,11 @@ const ProcessAndCompressImage = async (file) => {
   if (!file.type.startsWith("image/")) return file;
 
   const options = {
-    maxSizeMB: 0.4,          // 🎯 Maximum size 400KB locked! (Bohot saaf dikhegi)
-    maxWidthOrHeight: 1200,  // 📐 Dimension 1200px (HD quality retina screens ke liye)
+    maxSizeMB: 1,          // 🎯 Maximum size 1 mb locked! (Bohot saaf dikhegi)
+    maxWidthOrHeight: 2000,  // 📐 Dimension 2000px (HD quality retina screens ke liye)
     useWebWorker: true,
     fileType: "image/webp",  // ⚡ Auto-convert to WebP (Next-gen lightweight format)
+    initialQuality: 0.9,   // 🔧 Initial quality 80% (Adjustable)
   };
 
   try {
