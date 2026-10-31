@@ -114,6 +114,26 @@ async function getAllProducts(req, res) {
   }
 }
 
+async function getSellerProducts(req, res) {
+  try {
+    const products = await productModel.find({
+      sellerId: req.user.id,
+      isDeleted: false,
+    });
+
+    res.status(200).json({
+      message: "Seller products fetched successfully",
+      products,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Server error while fetching seller products",
+      error: error.message,
+    });
+  }
+}
+
 async function getProductById(req, res) {
    try {
     const productId = req.params.id;
@@ -134,6 +154,36 @@ async function getProductById(req, res) {
     console.error(error);
     res.status(500).json({
       message: "Server error while fetching product",
+      error: error.message,
+    });
+  }
+}
+
+async function getSellerProductById(req, res) {
+  try {
+    const productId = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(productId)) {
+      return res.status(400).json({ message: "Invalid Product ID format" });
+    }
+
+    const product = await productModel.findOne({
+      _id: productId,
+      sellerId: req.user.id,
+      isDeleted: false,
+    });
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found in your store" });
+    }
+
+    res.status(200).json({
+      message: "Seller product fetched successfully",
+      product,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Server error while fetching seller product",
       error: error.message,
     });
   }
@@ -264,6 +314,8 @@ async function deleteProduct(req, res) {
 module.exports = {
   createProduct,
   getAllProducts,
+  getSellerProducts,
+  getSellerProductById,
   updateProduct,
   getProductById,
   deleteProduct,

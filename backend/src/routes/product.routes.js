@@ -18,6 +18,8 @@ router.post(
   productController.createProduct,
 );
 
+router.get('/my-products', authMiddleware.authUser, productController.getSellerProducts);
+router.get('/my-products/:id', authMiddleware.authUser, productController.getSellerProductById);
 router.get('/', productController.getAllProducts);
 router.get('/:id', productController.getProductById);
 

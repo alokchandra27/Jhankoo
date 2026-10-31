@@ -50,7 +50,7 @@ const EditProduct = () => {
       try {
         setLoading(true);
 
-        const response = await API.get(`/api/products/${productId}`);
+        const response = await API.get(`/api/products/my-products/${productId}`);
 
         const product = response.data.product || response.data;
 

@@ -163,7 +163,7 @@ export default function ProductsManagement() {
       try {
         setIsLoading(true);
 
-        const response = await API.get("/api/products");
+        const response = await API.get("/api/products/my-products");
 
         // console.log("API Response:", response.data);
 

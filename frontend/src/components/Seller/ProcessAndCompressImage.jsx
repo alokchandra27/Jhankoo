@@ -13,9 +13,9 @@ const ProcessAndCompressImage = async (file) => {
   };
 
   try {
-    console.log(`Original Size: ${(file.size / 1024 / 1024).toFixed(2)} MB`);
+    // console.log(`Original Size: ${(file.size / 1024 / 1024).toFixed(2)} MB`);
     const compressedFile = await imageCompression(file, options);
-    console.log(`Compressed Size: ${(compressedFile.size / 1024).toFixed(2)} KB`);
+    // console.log(`Compressed Size: ${(compressedFile.size / 1024).toFixed(2)} KB`);
     
     // Nayi file ko upload karne ke liye return karein
     return compressedFile; 

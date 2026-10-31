@@ -286,7 +286,7 @@ const ProductCard = ({ product, productIndex, navigate, addToCart, toggleWishlis
 // ============================================================
 
 const PublicStore = () => {
-  const { storeName } = useParams();
+  const { username } = useParams();
     const validUsername =
     typeof username === "string" &&
     username.trim() &&
