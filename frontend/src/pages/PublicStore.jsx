@@ -4,7 +4,7 @@ import instagramImg from "../assets/instagram.webp";
 import facebookImg from "../assets/facebook.webp";
 import whatsappImg from "../assets/whatsapp.webp";
 import redcolorImg from "../assets/redcolor.webp";
-import profilePicImg from "../assets/profile-picture.png";
+import jhankoprofilepic from "../assets/jhankoprofilepic.webp";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -678,7 +678,7 @@ const PublicStore = () => {
 
           <div className="mx-auto h-[115px] w-[115px] shrink-0 rotate-[-2deg] overflow-hidden rounded-full border-[6px] border-white bg-creator-accent shadow-sm transition-all duration-500 hover:rotate-3 hover:scale-105 sm:h-[135px] sm:w-[135px] md:mx-0 md:h-[145px] md:w-[145px]">
             <img
-              src={getImageUrl(store?.storeLogo, profilePicImg)}
+              src={getImageUrl(store?.storeLogo, jhankoprofilepic)}
               alt={store?.storeName || "Store"}
               loading="eager"
               fetchPriority="high"
