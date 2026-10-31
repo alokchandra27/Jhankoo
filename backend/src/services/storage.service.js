@@ -18,7 +18,7 @@ async function uploadImage(file, folderName) {
     const response = await client.files.upload({
       file: convertedFile,
       fileName: file.originalname,
-      folder: `CreatorlyProducts/${folderName}`,
+      folder: `JhankooProducts/${folderName}`,
     });
 
     return {
