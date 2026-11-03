@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { ArrowLeft, ArrowRight, Check, ChevronLeft, ChevronRight, Heart, MapPin, MessageCircle, Minus, Package, Plus, Share2, ShoppingBag, Sparkles } from "lucide-react";
 import { toast } from "react-toastify";
@@ -37,7 +38,14 @@ export default function ProductDetails() {
   const getProductImages = (currentProduct) => {
     if (!currentProduct) return [];
 
-    return [currentProduct.productImage1, currentProduct.productImage2, currentProduct.productImage3, currentProduct.productImage4].map(getImageUrl).filter(Boolean);
+    return [
+      currentProduct.productImage1,
+      currentProduct.productImage2,
+      currentProduct.productImage3,
+      currentProduct.productImage4,
+    ]
+      .map(getImageUrl)
+      .filter(Boolean);
   };
 
   const formatPrice = (price) => {
@@ -57,8 +65,6 @@ export default function ProductDetails() {
 
         const response = await API.get(`/api/products/${id}`);
         const data = response.data;
-
-        console.log("Fetched product:", data);
 
         if (!data?.product) {
           setProduct(null);
@@ -91,7 +97,9 @@ export default function ProductDetails() {
           */
           if (currentProduct.sellerUsername) {
             try {
-              const storeResponse = await API.get(`/api/shop/${currentProduct.sellerUsername}`);
+              const storeResponse = await API.get(
+                `/api/shop/${currentProduct.sellerUsername}`
+              );
 
               setStore(storeResponse.data?.store || null);
             } catch (storeError) {
@@ -251,6 +259,8 @@ I want to order:
 Quantity: ${quantity}
 Price: ₹${formatPrice(product?.productPrice)}
 
+Product link: ${window.location.href}
+
 I found this product on your Jhankoo store.
     `.trim();
 
@@ -306,8 +316,8 @@ I found this product on your Jhankoo store.
               <div className="h-5 w-40 rounded-full bg-creator-text/10" />
               <div className="h-12 w-3/4 rounded-xl bg-creator-text/10" />
               <div className="h-6 w-40 rounded-full bg-creator-text/10" />
-              <div className="h-20 rounded-2xl bg-creator-text/10" />
-              <div className="h-14 rounded-full bg-creator-text/10" />
+              <div className="h-20 rounded-2xl bg-white/70" />
+              <div className="h-14 rounded-xl bg-white/70" />
             </div>
           </div>
         </div>
@@ -327,9 +337,13 @@ I found this product on your Jhankoo store.
             <Package size={25} />
           </div>
 
-          <h1 className="font-serif text-2xl font-semibold">Creation not found</h1>
+          <h1 className="font-serif text-2xl font-semibold">
+            Creation not found
+          </h1>
 
-          <p className="mt-2 text-sm leading-6 text-creator-text/55">This product may have been removed or is no longer available.</p>
+          <p className="mt-2 text-sm leading-6 text-creator-text/55">
+            This product may have been removed or is no longer available.
+          </p>
 
           <button
             onClick={() => navigate(-1)}
@@ -358,17 +372,24 @@ I found this product on your Jhankoo store.
       <main className="mx-auto max-w-6xl px-4 pb-20 pt-7 sm:px-6 lg:px-0 lg:pt-10">
         {/* Breadcrumb */}
         <div className="mb-7 flex items-center gap-2 overflow-hidden text-[10px] uppercase tracking-[0.15em] text-creator-text/40">
-          <button onClick={() => navigate(-1)} className="shrink-0 transition hover:text-creator-pink">
+          <button
+            onClick={() => navigate(-1)}
+            className="shrink-0 transition hover:text-creator-pink"
+          >
             Store
           </button>
 
           <span>/</span>
 
-          <span className="shrink-0">{product.category || "Handmade"}</span>
+          <span className="shrink-0">
+            {product.category || "Handmade"}
+          </span>
 
           <span>/</span>
 
-          <span className="truncate font-semibold text-creator-text/65">{product.productName}</span>
+          <span className="truncate font-semibold text-creator-text/65">
+            {product.productName}
+          </span>
         </div>
 
         {/* ===================================================
@@ -449,7 +470,11 @@ I found this product on your Jhankoo store.
                         key={index}
                         onClick={() => goToImage(index)}
                         aria-label={`View image ${index + 1}`}
-                        className={`h-1.5 rounded-full transition-all duration-300 ${activeImageIndex === index ? "w-5 bg-creator-text" : "w-1.5 bg-creator-text/25 hover:bg-creator-text/50"}`}
+                        className={`h-1.5 rounded-full transition-all duration-300 ${
+                          activeImageIndex === index
+                            ? "w-5 bg-creator-text"
+                            : "w-1.5 bg-creator-text/25 hover:bg-creator-text/50"
+                        }`}
                       />
                     ))}
                   </div>
@@ -457,7 +482,11 @@ I found this product on your Jhankoo store.
               </div>
 
               {/* Mobile swipe hint */}
-              {images.length > 1 && <p className="mt-2 text-center text-[9px] text-creator-text/35 sm:hidden">Swipe to see more photos</p>}
+              {images.length > 1 && (
+                <p className="mt-2 text-center text-[9px] text-creator-text/35 sm:hidden">
+                  Swipe to see more photos
+                </p>
+              )}
             </div>
 
             {/* Thumbnails */}
@@ -467,9 +496,19 @@ I found this product on your Jhankoo store.
                   <button
                     key={index}
                     onClick={() => goToImage(index)}
-                    className={`group relative h-[68px] w-[68px] shrink-0 overflow-hidden rounded-xl border-2 bg-white p-0.5 transition duration-300 sm:h-[76px] sm:w-[76px] ${activeImageIndex === index ? "scale-[0.96] border-creator-pink shadow-md" : "border-transparent opacity-65 hover:scale-[0.98] hover:opacity-100"}`}
+                    className={`group relative h-[68px] w-[68px] shrink-0 overflow-hidden rounded-xl border-2 bg-white p-0.5 transition duration-300 sm:h-[76px] sm:w-[76px] ${
+                      activeImageIndex === index
+                        ? "scale-[0.96] border-creator-pink shadow-md"
+                        : "border-transparent opacity-65 hover:scale-[0.98] hover:opacity-100"
+                    }`}
                   >
-                    <img src={image} alt={`${product.productName} ${index + 1}`} loading={index < 2 ? "eager" : "lazy"} decoding="async" className="h-full w-full rounded-lg object-cover" />
+                    <img
+                      src={image}
+                      alt={`${product.productName} ${index + 1}`}
+                      loading={index < 2 ? "eager" : "lazy"}
+                      decoding="async"
+                      className="h-full w-full rounded-lg object-cover"
+                    />
                   </button>
                 ))}
               </div>
@@ -483,7 +522,10 @@ I found this product on your Jhankoo store.
           <div className="flex flex-col">
             {/* Store */}
             <div className="mb-5 flex items-center justify-between gap-3">
-              <button onClick={() => navigate(-1)} className="group flex min-w-0 items-center gap-2">
+              <button
+                onClick={() => navigate(-1)}
+                className="group flex min-w-0 items-center gap-2"
+              >
                 {storeLogo ? (
                   <img
                     src={storeLogo}
@@ -494,13 +536,19 @@ I found this product on your Jhankoo store.
                     className="h-9 w-9 rounded-full border border-white object-cover shadow-sm transition group-hover:rotate-3"
                   />
                 ) : (
-                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-creator-accent text-xs font-semibold">{(store?.storeName || "C").charAt(0).toUpperCase()}</div>
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-creator-accent text-xs font-semibold">
+                    {(store?.storeName || "C").charAt(0).toUpperCase()}
+                  </div>
                 )}
 
                 <div className="min-w-0 text-left">
-                  <p className="text-[9px] uppercase tracking-[0.16em] text-creator-text/35">from</p>
+                  <p className="text-[9px] uppercase tracking-[0.16em] text-creator-text/35">
+                    from
+                  </p>
 
-                  <p className="truncate text-xs font-semibold">{store?.storeName || product.storeName || "Jhankoo Creator"}</p>
+                  <p className="truncate text-xs font-semibold">
+                    {store?.storeName || product.storeName || "Jhankoo Creator"}
+                  </p>
                 </div>
               </button>
 
@@ -516,7 +564,11 @@ I found this product on your Jhankoo store.
                 <button
                   onClick={() => setSaved((prev) => !prev)}
                   aria-label="Save product"
-                  className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition duration-300 ${saved ? "border-creator-pink bg-creator-pink/10 text-creator-pink" : "border-creator-text/10 bg-white hover:-translate-y-0.5 hover:rotate-[-4deg]"}`}
+                  className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition duration-300 ${
+                    saved
+                      ? "border-creator-pink bg-creator-pink/10 text-creator-pink"
+                      : "border-creator-text/10 bg-white hover:-translate-y-0.5 hover:rotate-[-4deg]"
+                  }`}
                 >
                   <Heart size={17} fill={saved ? "currentColor" : "none"} />
                 </button>
@@ -525,7 +577,9 @@ I found this product on your Jhankoo store.
 
             {/* Category */}
             <div className="mb-3 flex flex-wrap items-center gap-2">
-              <span className="rounded-full bg-creator-pink/10 px-3 py-1.5 text-[9px] font-semibold uppercase tracking-[0.12em] text-creator-pink">{product.category || "Handmade"}</span>
+              <span className="rounded-full bg-creator-pink/10 px-3 py-1.5 text-[9px] font-semibold uppercase tracking-[0.12em] text-creator-pink">
+                {product.category || "Handmade"}
+              </span>
 
               {product.customization && (
                 <span className="flex items-center gap-1 rounded-full bg-creator-accent/30 px-3 py-1.5 text-[9px] font-semibold text-creator-text/70">
@@ -536,9 +590,13 @@ I found this product on your Jhankoo store.
             </div>
 
             {/* Title */}
-            <h1 className="max-w-xl font-serif text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">{product.productName}</h1>
+            <h1 className="max-w-xl font-serif text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">
+              {product.productName}
+            </h1>
 
-            <p className="mt-3 font-caveat text-xl text-creator-pink sm:text-2xl">A little piece made just for you ✦</p>
+            <p className="mt-3 font-caveat text-xl text-creator-pink sm:text-2xl">
+              A little piece made just for you ✦
+            </p>
 
             {/* Shipping details are temporarily disabled. */}
             {/*
@@ -549,29 +607,42 @@ I found this product on your Jhankoo store.
 
             {/* Description */}
             <div className="mt-6">
-              <p className="text-sm leading-7 text-creator-text/65">{product.productDescription || "A thoughtfully handmade piece created with care."}</p>
+              <p className="text-sm leading-7 text-creator-text/65">
+                {product.productDescription ||
+                  "A thoughtfully handmade piece created with care."}
+              </p>
             </div>
 
             {/* Product Details */}
             <div className="mt-6 grid grid-cols-2 overflow-hidden rounded-2xl border border-creator-text/[0.07] bg-white/60">
               {product.color && (
                 <div className="border-b border-r border-creator-text/[0.07] p-4">
-                  <p className="text-[9px] uppercase tracking-[0.15em] text-creator-text/35">Color</p>
+                  <p className="text-[9px] uppercase tracking-[0.15em] text-creator-text/35">
+                    Color
+                  </p>
 
-                  <p className="mt-1 text-xs font-semibold capitalize">{product.color}</p>
+                  <p className="mt-1 text-xs font-semibold capitalize">
+                    {product.color}
+                  </p>
                 </div>
               )}
 
               {product.size && (
                 <div className="border-b border-creator-text/[0.07] p-4">
-                  <p className="text-[9px] uppercase tracking-[0.15em] text-creator-text/35">Size</p>
+                  <p className="text-[9px] uppercase tracking-[0.15em] text-creator-text/35">
+                    Size
+                  </p>
 
-                  <p className="mt-1 text-xs font-semibold">{product.size}</p>
+                  <p className="mt-1 text-xs font-semibold">
+                    {product.size}
+                  </p>
                 </div>
               )}
 
               <div className="border-r border-creator-text/[0.07] p-4">
-                <p className="text-[9px] uppercase tracking-[0.15em] text-creator-text/35">Making</p>
+                <p className="text-[9px] uppercase tracking-[0.15em] text-creator-text/35">
+                  Making
+                </p>
 
                 <p className="mt-1 flex items-center gap-1.5 text-xs font-semibold">
                   <Heart size={12} />
@@ -580,18 +651,27 @@ I found this product on your Jhankoo store.
               </div>
 
               <div className="p-4">
-                <p className="text-[9px] uppercase tracking-[0.15em] text-creator-text/35">Customization</p>
+                <p className="text-[9px] uppercase tracking-[0.15em] text-creator-text/35">
+                  Customization
+                </p>
 
-                <p className="mt-1 text-xs font-semibold">{product.customization ? "Available" : "Not available"}</p>
+                <p className="mt-1 text-xs font-semibold">
+                  {product.customization ? "Available" : "Not available"}
+                </p>
               </div>
             </div>
 
             {/* Extra Details */}
             <div className="mt-5 rounded-2xl bg-creator-accent/20 px-4 py-3">
-              <p className="text-[9px] font-semibold uppercase tracking-[0.15em] text-creator-text/45">A little more about it</p>
+              <p className="text-[9px] font-semibold uppercase tracking-[0.15em] text-creator-text/45">
+                A little more about it
+              </p>
 
               <p className="mt-1 text-xs leading-5 text-creator-text/65">
-                {product.extraDetails?.trim() && product.extraDetails.trim().toLowerCase() !== "none" ? product.extraDetails : "No extra details"}
+                {product.extraDetails?.trim() &&
+                product.extraDetails.trim().toLowerCase() !== "none"
+                  ? product.extraDetails
+                  : "No extra details"}
               </p>
             </div>
 
@@ -601,7 +681,9 @@ I found this product on your Jhankoo store.
                 <div>
                   <p className="text-xs font-semibold">Quantity</p>
 
-                  <p className="mt-0.5 text-[9px] text-creator-text/40">Choose how many you'd like</p>
+                  <p className="mt-0.5 text-[9px] text-creator-text/40">
+                    Choose how many you'd like
+                  </p>
                 </div>
 
                 <div className="flex items-center rounded-full border border-creator-text/10 bg-white p-1 shadow-sm">
@@ -613,7 +695,9 @@ I found this product on your Jhankoo store.
                     <Minus size={14} />
                   </button>
 
-                  <span className="min-w-[32px] text-center text-sm font-semibold">{quantity}</span>
+                  <span className="min-w-[32px] text-center text-sm font-semibold">
+                    {quantity}
+                  </span>
 
                   <button
                     onClick={() => handleQuantity("plus")}
@@ -635,7 +719,11 @@ I found this product on your Jhankoo store.
                 <button
                   onClick={addToCart}
                   disabled={addingToCart}
-                  className={`group flex w-full items-center justify-center gap-2 rounded-full px-6 py-4 text-sm font-semibold shadow-[0_10px_25px_rgba(44,50,47,0.12)] transition duration-300 active:scale-[0.98] ${addedToCart ? "bg-emerald-600 text-white" : "bg-creator-text text-white hover:-translate-y-1 hover:bg-creator-primary"}`}
+                  className={`group flex w-full items-center justify-center gap-2 rounded-full px-6 py-4 text-sm font-semibold shadow-[0_10px_25px_rgba(44,50,47,0.12)] transition duration-300 active:scale-[0.98] ${
+                    addedToCart
+                      ? "bg-emerald-600 text-white"
+                      : "bg-creator-text text-white hover:-translate-y-1 hover:bg-creator-primary"
+                  }`}
                 >
                   {addingToCart ? (
                     <>
@@ -667,7 +755,11 @@ I found this product on your Jhankoo store.
                 </button>
               )}
 
-              {isOutOfStock && <div className="rounded-full border border-red-100 bg-red-50 px-6 py-4 text-center text-sm font-semibold text-red-600">This creation is currently unavailable</div>}
+              {isOutOfStock && (
+                <div className="rounded-full border border-red-100 bg-red-50 px-6 py-4 text-center text-sm font-semibold text-red-600">
+                  This creation is currently unavailable
+                </div>
+              )}
             </div>
 
             {/* Creator reassurance */}
@@ -678,7 +770,9 @@ I found this product on your Jhankoo store.
                 <div>
                   <p className="text-[10px] font-semibold">Made with care</p>
 
-                  <p className="mt-0.5 text-[8px] leading-4 text-creator-text/40">Created by a small business</p>
+                  <p className="mt-0.5 text-[8px] leading-4 text-creator-text/40">
+                    Created by a small business
+                  </p>
                 </div>
               </div>
 
@@ -688,7 +782,9 @@ I found this product on your Jhankoo store.
                 <div>
                   <p className="text-[10px] font-semibold">Direct creator</p>
 
-                  <p className="mt-0.5 text-[8px] leading-4 text-creator-text/40">Ask about customization</p>
+                  <p className="mt-0.5 text-[8px] leading-4 text-creator-text/40">
+                    Ask about customization
+                  </p>
                 </div>
               </div>
             </div>
@@ -706,9 +802,13 @@ I found this product on your Jhankoo store.
 
           <div className="relative flex flex-col items-start justify-between gap-7 md:flex-row md:items-center">
             <div className="max-w-xl">
-              <p className="font-caveat text-lg text-creator-pink">more than just a product ✦</p>
+              <p className="font-caveat text-lg text-creator-pink">
+                more than just a product ✦
+              </p>
 
-              <h2 className="mt-1 font-serif text-2xl font-semibold sm:text-3xl">You're supporting someone's craft.</h2>
+              <h2 className="mt-1 font-serif text-2xl font-semibold sm:text-3xl">
+                You're supporting someone's craft.
+              </h2>
 
               <p className="mt-3 max-w-lg text-sm leading-6 text-creator-text/55">
                 Every piece on Jhankoo comes from a small creator building something of their own. Your order directly supports their time, creativity and work.
@@ -757,7 +857,9 @@ I found this product on your Jhankoo store.
           <div className="mx-auto flex max-w-md items-center gap-2">
             <button
               onClick={addToCart}
-              className={`flex h-12 flex-1 items-center justify-center gap-2 rounded-full px-4 text-xs font-semibold text-white shadow-lg transition active:scale-[0.98] ${addedToCart ? "bg-emerald-600" : "bg-creator-text"}`}
+              className={`flex h-12 flex-1 items-center justify-center gap-2 rounded-full px-4 text-xs font-semibold text-white shadow-lg transition active:scale-[0.98] ${
+                addedToCart ? "bg-emerald-600" : "bg-creator-text"
+              }`}
             >
               {addedToCart ? (
                 <>

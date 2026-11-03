@@ -49,7 +49,7 @@ const getImageUrl = (image, fallback = "") => {
 
 const Cart = () => {
   const navigate = useNavigate();
-  const { storeName } = useParams();
+  const { username: storeName } = useParams();
 
   const [cart, setCart] = useState([]);
 
@@ -228,6 +228,7 @@ I'd like to ask about these products:
 ${cart.map((item) => `• ${item.productName} × ${item.quantity}`).join("\n")}
 
 Could you please tell me about availability, customization and delivery?
+
 
 Thank you!`;
   };

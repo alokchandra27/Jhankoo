@@ -28,7 +28,7 @@ const getImageUrl = (image) => {
 
 const Wishlist = () => {
   const navigate = useNavigate();
-  const { storeName } = useParams();
+  const { username: storeName } = useParams();
 
   const [wishlist, setWishlist] =
     useState([]);

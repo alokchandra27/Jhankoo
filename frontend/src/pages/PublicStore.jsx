@@ -37,7 +37,7 @@ const getImageUrl = (image, fallback = "") => {
 // PRODUCT CARD
 // ============================================================
 
-const ProductCard = ({ product, productIndex, navigate, addToCart, toggleWishlist, isWishlisted }) => {
+const ProductCard = ({ product, productIndex, username, navigate, addToCart, toggleWishlist, isWishlisted }) => {
   const images = [getImageUrl(product?.productImage1), getImageUrl(product?.productImage2), getImageUrl(product?.productImage3), getImageUrl(product?.productImage4)].filter(Boolean);
 
   const [activeImage, setActiveImage] = useState(0);
@@ -111,7 +111,7 @@ const ProductCard = ({ product, productIndex, navigate, addToCart, toggleWishlis
       return;
     }
 
-    navigate(`/productDetails/${product._id}`);
+    navigate(`/publicstore/${encodeURIComponent(username)}/product/${product._id}`);
   };
 
   const isOutOfStock = product?.stocks !== undefined && product?.stocks !== null && Number(product.stocks) <= 0;
@@ -860,6 +860,7 @@ const PublicStore = () => {
                   key={product._id}
                   product={product}
                   productIndex={index}
+                  username={validUsername}
                   navigate={navigate}
                   addToCart={addToCart}
                   toggleWishlist={toggleWishlist}

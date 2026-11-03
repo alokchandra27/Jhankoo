@@ -9,6 +9,13 @@ const normalizeProfileLink = (value, baseUrl) => {
   return link === baseUrl ? "" : link;
 };
 
+// Temporary image preview URL ko release karta hai
+const revokePreview = (url) => {
+  if (url && url.startsWith("blob:")) {
+    URL.revokeObjectURL(url);
+  }
+};
+
 export default function StoreSettings() {
   const navigate = useNavigate();
 
@@ -121,6 +128,7 @@ export default function StoreSettings() {
         profileImage: store.profileImage || { url: "", fileId: "" },
         storeLogo: store.storeLogo || { url: "", fileId: "" },
         bannerImage: store.bannerImage || { url: "", fileId: "" },
+        countryCode: store.countryCode || "91",
       };
 
       setStoreData(fetchedStoreData);
@@ -169,10 +177,21 @@ export default function StoreSettings() {
     }));
   };
 
-  const getStoreLink = () => `${window.location.origin}/publicstore/${encodeURIComponent(storeData.storeName.trim())}`;
+  const getStoreLink = () => {
+  const username = profileData.username?.trim();
+
+  if (!username) return "";
+
+  return `${window.location.origin}/publicstore/${encodeURIComponent(username)}`;
+};
 
   const copyStoreLink = async () => {
     const storeLink = getStoreLink();
+
+     if (!storeLink) {
+    setStoreLinkMessage("Username is not available.");
+    return;
+  }
 
     try {
       if (navigator.clipboard?.writeText) {
@@ -203,6 +222,11 @@ export default function StoreSettings() {
   const shareStoreLink = async () => {
     const storeLink = getStoreLink();
 
+     if (!storeLink) {
+    setStoreLinkMessage("Username is not available.");
+    return;
+  }
+
     try {
       if (navigator.share) {
         await navigator.share({
@@ -223,31 +247,61 @@ export default function StoreSettings() {
     }
   };
 
-  const handleImageChange = async (e) => {
-    const { name, files } = e.target;
-    const file = files?.[0];
+const handleImageChange = async (e) => {
+  const { name, files } = e.target;
+  const file = files?.[0];
 
-    if (!file) return;
+  if (!file) return;
 
-    try {
-      setImageProcessing((prev) => ({ ...prev, [name]: true }));
-      const compressedFile = await ProcessAndCompressImage(file);
+  // Sirf allowed image fields process honge
+  if (!["profileImage", "storeLogo", "bannerImage"].includes(name)) {
+    return;
+  }
 
-      setImageFiles((prev) => ({ ...prev, [name]: compressedFile }));
-      setImagePreviews((prev) => ({
-        ...prev,
-        [name]: URL.createObjectURL(compressedFile),
-      }));
-    } catch (error) {
-      console.error(`Image processing failed for ${name}:`, error);
-      setStoreMessage({
-        type: "error",
-        text: "Unable to process the image. Please try another image.",
-      });
-    } finally {
-      setImageProcessing((prev) => ({ ...prev, [name]: false }));
-    }
-  };
+  try {
+    setImageProcessing((prev) => ({
+      ...prev,
+      [name]: true,
+    }));
+
+    const compressedFile = await ProcessAndCompressImage(
+      file,
+      name === "bannerImage" ? "banner" : "default"
+    );
+
+    // Pehle purana preview URL release karo
+    revokePreview(imagePreviews[name]);
+
+    // Compressed image file save karo
+    setImageFiles((prev) => ({
+      ...prev,
+      [name]: compressedFile,
+    }));
+
+    // Naya preview URL sirf ek baar create karo
+    const newPreviewUrl = URL.createObjectURL(compressedFile);
+
+    setImagePreviews((prev) => ({
+      ...prev,
+      [name]: newPreviewUrl,
+    }));
+  } catch (error) {
+    console.error(`Image processing failed for ${name}:`, error);
+
+    setStoreMessage({
+      type: "error",
+      text: "Unable to process the image. Please try another image.",
+    });
+  } finally {
+    setImageProcessing((prev) => ({
+      ...prev,
+      [name]: false,
+    }));
+
+    // Same image dobara select karne ki permission
+    e.target.value = "";
+  }
+};
 
   // ---------------------------------------------------------
   // PROFILE INPUT CHANGE
@@ -264,29 +318,38 @@ export default function StoreSettings() {
   // ---------------------------------------------------------
   // CANCEL STORE EDIT
   // ---------------------------------------------------------
-  const cancelStoreEdit = () => {
-    if (originalStoreData) {
-      setStoreData(originalStoreData);
-    }
+const cancelStoreEdit = () => {
+  // Temporary blob previews release karo
+  Object.values(imagePreviews).forEach((url) => {
+    revokePreview(url);
+  });
 
-    setImageFiles({
-      profileImage: null,
-      storeLogo: null,
-      bannerImage: null,
-    });
-    setImagePreviews({
-      profileImage: originalStoreData?.profileImage?.url || "",
-      storeLogo: originalStoreData?.storeLogo?.url || "",
-      bannerImage: originalStoreData?.bannerImage?.url || "",
-    });
+  // Original store data restore karo
+  if (originalStoreData) {
+    setStoreData(originalStoreData);
+  }
 
-    setStoreEditing(false);
+  // Selected image files clear karo
+  setImageFiles({
+    profileImage: null,
+    storeLogo: null,
+    bannerImage: null,
+  });
 
-    setStoreMessage({
-      type: "",
-      text: "",
-    });
-  };
+  // Original server image previews restore karo
+  setImagePreviews({
+    profileImage: originalStoreData?.profileImage?.url || "",
+    storeLogo: originalStoreData?.storeLogo?.url || "",
+    bannerImage: originalStoreData?.bannerImage?.url || "",
+  });
+
+  setStoreEditing(false);
+
+  setStoreMessage({
+    type: "",
+    text: "",
+  });
+};
 
   // ---------------------------------------------------------
   // CANCEL PROFILE EDIT
@@ -536,7 +599,7 @@ export default function StoreSettings() {
     try {
       setDeleteLoading(true);
 
-      await API.delete("/auth/profile");
+     await API.delete("/api/auth/profile");
 
       setShowDeleteModal(false);
 
@@ -590,8 +653,6 @@ export default function StoreSettings() {
             </button> */}
 
             <div>
-
-              
               <div className="flex items-center gap-2">
                 <Settings size={17} className="text-creator-primary" />
 
@@ -618,7 +679,7 @@ export default function StoreSettings() {
             <button
               type="button"
               onClick={copyStoreLink}
-              disabled={!storeData.storeName.trim()}
+              disabled={!profileData.username?.trim()}
               className="inline-flex items-center justify-center gap-2 rounded-full border border-creator-text/10 bg-creator-bg-butter px-4 py-2.5 text-xs font-bold transition hover:-translate-y-0.5 hover:bg-white hover:shadow-sm disabled:cursor-not-allowed disabled:opacity-50"
             >
               <Check size={14} />
@@ -628,7 +689,7 @@ export default function StoreSettings() {
             <button
               type="button"
               onClick={shareStoreLink}
-              disabled={!storeData.storeName.trim()}
+              disabled={!profileData.username?.trim()}
               className="inline-flex items-center justify-center gap-2 rounded-full bg-creator-primary px-4 py-2.5 text-xs font-bold text-white transition hover:-translate-y-0.5 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-50"
             >
               <Share2 size={14} />
@@ -728,9 +789,7 @@ export default function StoreSettings() {
                             onChange={handleImageChange}
                             className="block w-full text-xs text-creator-text/60 file:mr-3 file:rounded-full file:border-0 file:bg-creator-primary file:px-4 file:py-2 file:text-xs file:font-bold file:text-white"
                           />
-                          <p className="mt-2 text-[10px] text-creator-text/40">
-                            {imageProcessing[imageField.name] ? "Processing image..." : `${imageField.help} JPG, PNG or WebP recommended.`}
-                          </p>
+                          <p className="mt-2 text-[10px] text-creator-text/40">{imageProcessing[imageField.name] ? "Processing image..." : `${imageField.help} JPG, PNG or WebP recommended.`}</p>
                         </div>
                       </div>
                     </div>
@@ -1150,7 +1209,9 @@ export default function StoreSettings() {
                           autoComplete="current-password"
                           placeholder="Enter your current password"
                           className={`w-full rounded-2xl border p-3.5 pr-12 text-sm font-semibold outline-none transition ${
-                            profileEditing ? "border-creator-text/10 bg-creator-bg-butter focus:border-creator-accent focus:ring-4 focus:ring-creator-accent/5" : "border-transparent bg-creator-bg-butter/60"
+                            profileEditing
+                              ? "border-creator-text/10 bg-creator-bg-butter focus:border-creator-accent focus:ring-4 focus:ring-creator-accent/5"
+                              : "border-transparent bg-creator-bg-butter/60"
                           }`}
                         />
 
@@ -1179,7 +1240,9 @@ export default function StoreSettings() {
                           autoComplete="new-password"
                           placeholder="Enter your new password"
                           className={`w-full rounded-2xl border p-3.5 pr-12 text-sm font-semibold outline-none transition ${
-                            profileEditing ? "border-creator-text/10 bg-creator-bg-butter focus:border-creator-accent focus:ring-4 focus:ring-creator-accent/5" : "border-transparent bg-creator-bg-butter/60"
+                            profileEditing
+                              ? "border-creator-text/10 bg-creator-bg-butter focus:border-creator-accent focus:ring-4 focus:ring-creator-accent/5"
+                              : "border-transparent bg-creator-bg-butter/60"
                           }`}
                         />
 
