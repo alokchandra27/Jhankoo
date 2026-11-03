@@ -57,11 +57,15 @@ const JhankooPageLoader = () => {
 
 
 const LegacyPublicStoreRedirect = () => {
-  const { storeName } = useParams();
+  const { username } = useParams();
 
-  return <Navigate to={`/publicstore/${encodeURIComponent(username)}`} replace />;
+  return (
+    <Navigate
+      to={`/publicstore/${encodeURIComponent(username)}`}
+      replace
+    />
+  );
 };
-
 
 // MAIN ROUTES
 

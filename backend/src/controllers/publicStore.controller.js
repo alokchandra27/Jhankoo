@@ -11,27 +11,27 @@ async function getSellerStoreByUsername(req, res) {
     }
 
     // Find seller using unique username
-    const seller = await sellerModel.findOne({
-      username: username.trim(),
-    }).select("_id username storeName");
+    const seller = await sellerModel
+      .findOne({
+        username: {
+          $regex: `^${username.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`,
+          $options: "i",
+        },
+      })
+      .select("_id username storeName");
 
     if (!seller) {
       return res.status(404).json({ message: "Shop profile not found" });
     }
 
     // Find store using sellerId
-    const storeProfile = await storeModel
-      .findOne({ sellerId: seller._id })
-      .select("-createdAt -updatedAt -__v");
+    const storeProfile = await storeModel.findOne({ sellerId: seller._id }).select("-createdAt -updatedAt -__v");
 
     // Prepare public store data
     const finalStoreData = {
       storeName: storeProfile?.storeName || seller.storeName || "",
       bio: storeProfile?.bio || seller.bio || "",
-      profileImage:
-        storeProfile?.profileImage?.url ||
-        seller.profileImage ||
-        "",
+      profileImage: storeProfile?.profileImage?.url || seller.profileImage || "",
       storeLogo: storeProfile?.storeLogo?.url || "",
       bannerImage: storeProfile?.bannerImage?.url || "",
       instagramUsername: storeProfile?.instagramUsername || "",
